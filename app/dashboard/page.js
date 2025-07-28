@@ -1,204 +1,360 @@
 "use client";
-
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  Button,
-} from "@/components/ui";
+import { Card } from "@/components/ui";
+import Link from "next/link";
 
 export default function Dashboard() {
-  // Mock data for demo purposes
-  const stats = {
-    totalCustomers: 1250,
-    totalLeads: 342,
-    totalDeals: 89,
-    revenue: 125000,
-  };
-
-  const statCards = [
-    {
-      title: "Total Customers",
-      value: stats.totalCustomers?.toLocaleString() || "0",
-      icon: "👥",
-      color: "text-blue-600",
-      bgColor: "bg-blue-50",
-    },
-    {
-      title: "Active Leads",
-      value: stats.totalLeads?.toLocaleString() || "0",
-      icon: "🎯",
-      color: "text-green-600",
-      bgColor: "bg-green-50",
-    },
-    {
-      title: "Deals in Progress",
-      value: stats.totalDeals?.toLocaleString() || "0",
-      icon: "💼",
-      color: "text-yellow-600",
-      bgColor: "bg-yellow-50",
-    },
-    {
-      title: "Monthly Revenue",
-      value: `$${(stats.revenue || 0).toLocaleString()}`,
-      icon: "💰",
-      color: "text-purple-600",
-      bgColor: "bg-purple-50",
-    },
-  ];
-
-  const recentActivities = [
-    {
-      id: 1,
-      type: "lead",
-      message: "New lead: John Smith from Acme Corp",
-      time: "2 minutes ago",
-      icon: "🔥",
-    },
-    {
-      id: 2,
-      type: "deal",
-      message: "Deal closed: $15,000 with TechStart Inc",
-      time: "1 hour ago",
-      icon: "✅",
-    },
-    {
-      id: 3,
-      type: "customer",
-      message: "New customer registration: Sarah Johnson",
-      time: "3 hours ago",
-      icon: "👤",
-    },
-  ];
-
   return (
     <div className="space-y-6">
       {/* Welcome Section */}
-      <div className="mb-8">
+      <div>
         <h1 className="text-3xl font-bold text-secondary-900">
-          Welcome to Rocky CRM! 👋
+          Welcome to Rocky CRM!
         </h1>
-        <p className="text-secondary-600 mt-2">
-          Here's what's happening with your business today.
+        <p className="mt-2 text-secondary-600">
+          Here's what's happening with your pharmacy today.
         </p>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {statCards.map((stat, index) => (
-          <Card key={index} variant="default" hover>
-            <CardContent>
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-secondary-600">
-                    {stat.title}
-                  </p>
-                  <p className="mt-2 text-3xl font-bold text-secondary-900">
-                    {stat.value}
-                  </p>
-                </div>
-                <div className={`p-3 rounded-lg ${stat.bgColor}`}>
-                  <span className="text-2xl">{stat.icon}</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Prescriptions */}
+        <Card className="p-6">
+          <div className="flex justify-between items-start">
+            <div>
+              <p className="text-sm font-medium text-secondary-600">
+                Total Prescriptions
+              </p>
+              <p className="text-2xl font-bold text-secondary-900 mt-2">
+                1,250
+              </p>
+            </div>
+            <span className="p-2 bg-primary-50 rounded-lg">
+              <svg
+                className="w-6 h-6 text-secondary-900"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"
+                />
+              </svg>
+            </span>
+          </div>
+        </Card>
+
+        {/* Active Orders */}
+        <Card className="p-6">
+          <div className="flex justify-between items-start">
+            <div>
+              <p className="text-sm font-medium text-secondary-600">
+                Active Orders
+              </p>
+              <p className="text-2xl font-bold text-secondary-900 mt-2">342</p>
+            </div>
+            <span className="p-2 bg-primary-50 rounded-lg">
+              <svg
+                className="w-6 h-6 text-secondary-900"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+                />
+              </svg>
+            </span>
+          </div>
+        </Card>
+
+        {/* Pending Refills */}
+        <Card className="p-6">
+          <div className="flex justify-between items-start">
+            <div>
+              <p className="text-sm font-medium text-secondary-600">
+                Pending Refills
+              </p>
+              <p className="text-2xl font-bold text-secondary-900 mt-2">89</p>
+            </div>
+            <span className="p-2 bg-primary-50 rounded-lg">
+              <svg
+                className="w-6 h-6 text-secondary-900"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                />
+              </svg>
+            </span>
+          </div>
+        </Card>
+
+        {/* Fax Queue */}
+        <Card className="p-6">
+          <div className="flex justify-between items-start">
+            <div>
+              <p className="text-sm font-medium text-secondary-600">
+                Fax Queue
+              </p>
+              <p className="text-2xl font-bold text-secondary-900 mt-2">15</p>
+            </div>
+            <span className="p-2 bg-primary-50 rounded-lg">
+              <svg
+                className="w-6 h-6 text-secondary-900"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                />
+              </svg>
+            </span>
+          </div>
+        </Card>
       </div>
 
-      {/* Main Content Grid */}
+      {/* Two Column Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Recent Activity */}
         <div className="lg:col-span-2">
           <Card>
-            <CardHeader>
-              <CardTitle>Recent Activity</CardTitle>
-            </CardHeader>
-            <CardContent>
+            <div className="p-6">
+              <h2 className="text-lg font-semibold text-secondary-900 mb-4">
+                Recent Activity
+              </h2>
               <div className="space-y-4">
-                {recentActivities.map((activity) => (
-                  <div
-                    key={activity.id}
-                    className="flex items-start space-x-3 p-3 rounded-lg hover:bg-primary-50 transition-colors"
-                  >
-                    <div className="flex-shrink-0">
-                      <span className="text-lg">{activity.icon}</span>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm text-secondary-900">
-                        {activity.message}
-                      </p>
-                      <p className="text-xs text-secondary-500 mt-1">
-                        {activity.time}
-                      </p>
-                    </div>
+                {/* New Prescription */}
+                <div className="flex items-start gap-4">
+                  <span className="p-2 bg-primary-50 rounded-lg shrink-0">
+                    <svg
+                      className="w-5 h-5 text-secondary-900"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"
+                      />
+                    </svg>
+                  </span>
+                  <div>
+                    <p className="text-sm font-medium text-secondary-900">
+                      New prescription received: John Smith
+                    </p>
+                    <p className="text-sm text-secondary-500">2 minutes ago</p>
                   </div>
-                ))}
+                </div>
+
+                {/* Order Processed */}
+                <div className="flex items-start gap-4">
+                  <span className="p-2 bg-primary-50 rounded-lg shrink-0">
+                    <svg
+                      className="w-5 h-5 text-secondary-900"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+                      />
+                    </svg>
+                  </span>
+                  <div>
+                    <p className="text-sm font-medium text-secondary-900">
+                      Order processed: #12345
+                    </p>
+                    <p className="text-sm text-secondary-500">1 hour ago</p>
+                  </div>
+                </div>
+
+                {/* Refill Request */}
+                <div className="flex items-start gap-4">
+                  <span className="p-2 bg-primary-50 rounded-lg shrink-0">
+                    <svg
+                      className="w-5 h-5 text-secondary-900"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                      />
+                    </svg>
+                  </span>
+                  <div>
+                    <p className="text-sm font-medium text-secondary-900">
+                      Refill requested: Sarah Johnson
+                    </p>
+                    <p className="text-sm text-secondary-500">3 hours ago</p>
+                  </div>
+                </div>
               </div>
-            </CardContent>
+            </div>
           </Card>
         </div>
 
         {/* Quick Actions */}
         <div>
           <Card>
-            <CardHeader>
-              <CardTitle>Quick Actions</CardTitle>
-            </CardHeader>
-            <CardContent>
+            <div className="p-6">
+              <h2 className="text-lg font-semibold text-secondary-900 mb-4">
+                Quick Actions
+              </h2>
               <div className="space-y-3">
-                <Button variant="primary" className="w-full justify-start">
-                  <span className="mr-2">➕</span>
-                  Add New Lead
-                </Button>
-                <Button variant="secondary" className="w-full justify-start">
-                  <span className="mr-2">👤</span>
-                  Add Customer
-                </Button>
-                <Button variant="secondary" className="w-full justify-start">
-                  <span className="mr-2">💼</span>
-                  Create Deal
-                </Button>
-                <Button variant="secondary" className="w-full justify-start">
-                  <span className="mr-2">📅</span>
-                  Schedule Meeting
-                </Button>
+                <Link
+                  href="/scanner"
+                  className="flex items-center gap-3 p-3 hover:bg-primary-50 rounded-lg transition-colors"
+                >
+                  <span className="p-2 bg-primary-50 rounded-lg">
+                    <svg
+                      className="w-5 h-5 text-secondary-900"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                      />
+                    </svg>
+                  </span>
+                  <span className="text-sm font-medium text-secondary-900">
+                    Scan Document
+                  </span>
+                </Link>
+
+                <Link
+                  href="/orders/new"
+                  className="flex items-center gap-3 p-3 hover:bg-primary-50 rounded-lg transition-colors"
+                >
+                  <span className="p-2 bg-primary-50 rounded-lg">
+                    <svg
+                      className="w-5 h-5 text-secondary-900"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                      />
+                    </svg>
+                  </span>
+                  <span className="text-sm font-medium text-secondary-900">
+                    Create Order
+                  </span>
+                </Link>
+
+                <Link
+                  href="/clinic-fax/new"
+                  className="flex items-center gap-3 p-3 hover:bg-primary-50 rounded-lg transition-colors"
+                >
+                  <span className="p-2 bg-primary-50 rounded-lg">
+                    <svg
+                      className="w-5 h-5 text-secondary-900"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                      />
+                    </svg>
+                  </span>
+                  <span className="text-sm font-medium text-secondary-900">
+                    Send Fax
+                  </span>
+                </Link>
+
+                <Link
+                  href="/queue"
+                  className="flex items-center gap-3 p-3 hover:bg-primary-50 rounded-lg transition-colors"
+                >
+                  <span className="p-2 bg-primary-50 rounded-lg">
+                    <svg
+                      className="w-5 h-5 text-secondary-900"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                      />
+                    </svg>
+                  </span>
+                  <span className="text-sm font-medium text-secondary-900">
+                    View Queue
+                  </span>
+                </Link>
               </div>
-            </CardContent>
+            </div>
           </Card>
 
           {/* System Status */}
           <Card className="mt-6">
-            <CardHeader>
-              <CardTitle>System Status</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
+            <div className="p-6">
+              <h2 className="text-lg font-semibold text-secondary-900 mb-4">
+                System Status
+              </h2>
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
                   <span className="text-sm text-secondary-600">API Status</span>
-                  <span className="flex items-center text-green-600">
-                    <div className="w-2 h-2 bg-green-600 rounded-full mr-2"></div>
+                  <span className="flex items-center text-sm font-medium text-green-600">
+                    <span className="h-2 w-2 rounded-full bg-green-600 mr-2"></span>
                     Online
                   </span>
                 </div>
-                <div className="flex items-center justify-between">
+                <div className="flex justify-between items-center">
                   <span className="text-sm text-secondary-600">Database</span>
-                  <span className="flex items-center text-green-600">
-                    <div className="w-2 h-2 bg-green-600 rounded-full mr-2"></div>
+                  <span className="flex items-center text-sm font-medium text-green-600">
+                    <span className="h-2 w-2 rounded-full bg-green-600 mr-2"></span>
                     Connected
                   </span>
                 </div>
-                <div className="flex items-center justify-between">
+                <div className="flex justify-between items-center">
                   <span className="text-sm text-secondary-600">
                     Last Backup
                   </span>
-                  <span className="text-sm text-secondary-500">
+                  <span className="text-sm text-secondary-600">
                     2 hours ago
                   </span>
                 </div>
               </div>
-            </CardContent>
+            </div>
           </Card>
         </div>
       </div>

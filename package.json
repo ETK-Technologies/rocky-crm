@@ -6,7 +6,9 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "images:validate": "node scripts/optimize-images.js validate",
+    "images:list": "node scripts/optimize-images.js list"
   },
   "dependencies": {
     "react": "19.1.0",

@@ -3,35 +3,32 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { authService } from "@/lib/services/authService";
-import { useFormSubmit } from "@/lib/hooks/useApi";
-import { VALIDATION_SCHEMAS, validateForm } from "@/lib/utils/validation";
+import { Card } from "@/components/ui";
 import RockyLogo from "@/components/RockyLogo";
-import { Button, Input, Card, CardContent } from "@/components/ui";
 
 export default function Login() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     username: "",
     password: "",
     rememberMe: false,
   });
-  const [errors, setErrors] = useState({});
 
-  // Check if user is already logged in
   useEffect(() => {
-    if (authService.isAuthenticated()) {
-      router.push("/dashboard");
-    }
+    const checkAuth = async () => {
+      try {
+        if (authService.isAuthenticated()) {
+          router.push("/dashboard");
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    checkAuth();
   }, [router]);
-
-  // Get current year for dynamic copyright
-  const currentYear = new Date().getFullYear();
-
-  const { loading, error, submit } = useFormSubmit(async (credentials) => {
-    const response = await authService.login(credentials);
-    router.push("/dashboard");
-    return response;
-  });
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -39,129 +36,132 @@ export default function Login() {
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
-
-    // Clear error when user starts typing
-    if (errors[name]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: null,
-      }));
-    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // In development, just log in with dummy credentials
-    if (process.env.NODE_ENV === "development") {
-      await submit({ username: "admin", password: "password" });
-      return;
-    }
-
-    // Validate form
-    const validation = validateForm(formData, {
-      username: VALIDATION_SCHEMAS.customer.name,
-      password: [VALIDATION_SCHEMAS.customer.name[0]], // Use required validation
-    });
-
-    if (!validation.isValid) {
-      setErrors(validation.errors);
-      return;
-    }
+    setError("");
 
     try {
-      await submit(formData);
+      await authService.login();
+      router.push("/dashboard");
     } catch (err) {
-      console.error("Login failed:", err);
+      setError("Login failed. Please try again.");
+      console.error("Login error:", err);
     }
   };
 
-  return (
-    <div className="min-h-screen flex flex-col justify-center py-12 bg-gradient-to-br from-primary-50 to-primary-100 px-4 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        {/* Logo */}
-        <div className="flex justify-center mb-6">
-          <RockyLogo size="xl" />
-        </div>
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-primary-100">
+        <div className="text-secondary-600">Loading...</div>
       </div>
+    );
+  }
 
-      <Card className="sm:mx-auto sm:w-full sm:max-w-md">
-        <CardContent>
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            {/* Global Error */}
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-primary-100 p-4">
+      <Card className="w-full max-w-md bg-white rounded-xl shadow-xl">
+        <div className="flex flex-col items-center text-center p-8">
+          <div className="mb-8">
+            <h1 className="text-4xl font-bold text-secondary-900">rocky</h1>
+          </div>
+
+          <h2 className="text-2xl font-bold text-secondary-900 mb-3">
+            Welcome Back
+          </h2>
+          <p className="text-secondary-600 text-base mb-8">
+            Please sign in to access your dashboard and manage your pharmacy
+            relationships effectively.
+          </p>
+
+          <form onSubmit={handleSubmit} className="w-full space-y-6">
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
-                <p className="text-sm">
-                  {error.message || "Invalid credentials. Please try again."}
-                </p>
+              <div className="p-3 text-sm text-red-600 bg-red-50 rounded-lg">
+                {error}
               </div>
             )}
 
-            {/* Username Field */}
-            <Input
-              label="Username"
-              name="username"
-              type="text"
-              value={formData.username}
-              onChange={handleChange}
-              error={errors.username}
-              placeholder="Enter your username"
-              required
-              disabled={loading}
-            />
+            <div className="space-y-4">
+              <div className="text-left">
+                <label className="block text-sm font-medium text-secondary-700 mb-1">
+                  Username <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="username"
+                  value={formData.username}
+                  onChange={handleChange}
+                  placeholder="Enter your username"
+                  className="w-full px-4 py-2.5 bg-white border border-secondary-200 rounded-lg focus:ring-2 focus:ring-primary-100 focus:border-primary-300 transition-colors"
+                  required
+                />
+              </div>
 
-            {/* Password Field */}
-            <Input
-              label="Password"
-              name="password"
-              type="password"
-              value={formData.password}
-              onChange={handleChange}
-              error={errors.password}
-              placeholder="Enter your password"
-              required
-              disabled={loading}
-            />
+              <div className="text-left">
+                <label className="block text-sm font-medium text-secondary-700 mb-1">
+                  Password <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  placeholder="Enter your password"
+                  className="w-full px-4 py-2.5 bg-white border border-secondary-200 rounded-lg focus:ring-2 focus:ring-primary-100 focus:border-primary-300 transition-colors"
+                  required
+                />
+              </div>
 
-            {/* Remember Me */}
-            <div className="flex items-center">
-              <Input
-                type="checkbox"
-                name="rememberMe"
-                checked={formData.rememberMe}
-                onChange={handleChange}
-                disabled={loading}
-                className="h-4 w-4 text-primary-100 focus:ring-primary-200 border-secondary-300 rounded"
-              />
-              <label
-                htmlFor="rememberMe"
-                className="ml-2 block text-sm text-secondary-700"
-              >
-                Remember me
-              </label>
+              <div className="flex items-center justify-between pt-2">
+                <label className="flex items-center">
+                  <input
+                    type="checkbox"
+                    name="rememberMe"
+                    checked={formData.rememberMe}
+                    onChange={handleChange}
+                    className="w-4 h-4 border-secondary-300 rounded text-primary-600 focus:ring-primary-500 transition-colors"
+                  />
+                  <span className="ml-2 text-sm text-secondary-600">
+                    Remember me
+                  </span>
+                </label>
+
+                <button
+                  type="button"
+                  className="text-sm text-primary-600 hover:text-primary-700 transition-colors"
+                >
+                  Forgot password?
+                </button>
+              </div>
             </div>
 
-            {/* Submit Button */}
-            <Button
+            <button
               type="submit"
-              variant="primary"
-              size="lg"
-              className="w-full"
-              loading={loading}
-              disabled={loading}
+              className="w-full py-2.5 px-4 bg-primary-50 text-secondary-900 rounded-lg hover:bg-primary-100 transition-colors font-medium"
             >
-              {loading ? "Signing in..." : "Sign in"}
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
+              Sign In
+            </button>
 
-      {/* Footer */}
-      <div className="mt-8 text-center">
-        <p className="text-sm text-secondary-500">
-          © {currentYear} Rocky CRM. All rights reserved.
-        </p>
-      </div>
+            {process.env.NODE_ENV === "development" && (
+              <div className="mt-6 p-4 bg-secondary-50 rounded-lg">
+                <p className="text-sm text-secondary-700 font-medium">
+                  Development Mode
+                </p>
+                <p className="text-sm text-secondary-600 mt-1">
+                  Any credentials will work in development mode.
+                </p>
+              </div>
+            )}
+          </form>
+
+          <div className="mt-8 pt-6 border-t border-secondary-100 w-full text-center">
+            <p className="text-sm text-secondary-500">
+              © {new Date().getFullYear()} Rocky CRM. All rights reserved.
+            </p>
+          </div>
+        </div>
+      </Card>
     </div>
   );
 }

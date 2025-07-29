@@ -5,33 +5,27 @@
  */
 
 import Image from "next/image";
+import { IMAGE_PATHS, IMAGE_SIZES } from "@/lib/constants/images";
 
 export default function RockyLogo({
   size = "md",
   className = "",
   alt = "Rocky CRM Logo",
   priority = false,
-  src = "/images/logos/rocky-logo.png",
+  src = IMAGE_PATHS.LOGOS.ROCKY_LOGO,
 }) {
-  // Define dimensions for each size
-  const dimensions = {
-    sm: { width: 100, height: 32 },
-    md: { width: 120, height: 40 },
-    lg: { width: 140, height: 48 },
-    xl: { width: 160, height: 64 },
+  const isRoundedLogo = src === IMAGE_PATHS.LOGOS.ROCKY_LOGO_ROUNDED;
+
+  // Map size prop to actual dimensions
+  const sizeMap = {
+    sm: IMAGE_SIZES.LOGO.SMALL,
+    md: IMAGE_SIZES.LOGO.MEDIUM,
+    lg: IMAGE_SIZES.LOGO.LARGE,
+    xl: IMAGE_SIZES.LOGO.XLARGE,
   };
 
-  // For rounded logo, use larger square dimensions
-  const isRoundedLogo = src.includes("logo-rounded");
-  const currentSize = dimensions[size];
-
-  // Use larger dimensions for rounded logo
-  const imageSize = isRoundedLogo
-    ? {
-        width: 80, // Fixed size for rounded logo
-        height: 80, // Matches the width for perfect circle
-      }
-    : currentSize;
+  // Use rounded size for rounded logo, otherwise use mapped size
+  const imageSize = isRoundedLogo ? IMAGE_SIZES.LOGO.ROUNDED : sizeMap[size];
 
   return (
     <div className={`relative flex items-center ${className}`}>

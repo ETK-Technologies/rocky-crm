@@ -7,6 +7,7 @@ import RockyLogo from "@/components/RockyLogo";
 import UserAvatar from "@/components/UserAvatar";
 import { Button } from "@/components/ui";
 import Icons from "@/components/icons";
+import { IMAGE_PATHS } from "@/lib/constants/images";
 
 // Navigation configuration
 const NAVIGATION_CONFIG = {
@@ -81,8 +82,8 @@ const SidebarHeader = ({ isCollapsed, onCollapse }) => (
         size={isCollapsed ? "xl" : "sm"}
         src={
           isCollapsed
-            ? "/images/logos/logo-rounded.png"
-            : "/images/logos/rocky-logo.png"
+            ? IMAGE_PATHS.LOGOS.ROCKY_LOGO_ROUNDED
+            : IMAGE_PATHS.LOGOS.ROCKY_LOGO
         }
         className={isCollapsed ? "-m-1" : ""}
       />

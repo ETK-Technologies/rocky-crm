@@ -4,11 +4,19 @@ import { useState, useEffect } from "react";
 import { authService } from "@/lib/services/authService";
 import Sidebar from "@/components/Sidebar";
 import Navbar from "@/components/Navbar";
+import { usePathname } from "next/navigation";
 
-export default function DashboardLayout({ children }) {
+export default function AuthLayout({ children }) {
   const [user, setUser] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const pathname = usePathname();
+
+  // Get the current page title from the pathname
+  const getPageTitle = () => {
+    const path = pathname.split("/")[1]; // Get the first segment of the path
+    return path.charAt(0).toUpperCase() + path.slice(1); // Capitalize first letter
+  };
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -76,7 +84,7 @@ export default function DashboardLayout({ children }) {
         {/* Top bar */}
         <Navbar
           onMenuToggle={handleMenuToggle}
-          pageTitle="Dashboard"
+          pageTitle={getPageTitle()}
           user={user}
           onLogout={handleLogout}
         />

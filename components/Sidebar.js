@@ -4,7 +4,6 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import RockyLogo from "@/components/RockyLogo";
-import UserAvatar from "@/components/UserAvatar";
 import { Button } from "@/components/ui";
 import Icons from "@/components/icons";
 import { IMAGE_PATHS } from "@/lib/constants/images";

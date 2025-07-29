@@ -1,13 +1,9 @@
-// UI Components Export
-// Easy imports: import { Button, Input, Card } from '@/components/ui';
+// Export Shadcn components
+export * from "./Button";
+export * from "./Card";
+export * from "./Input";
+export * from "./Avatar";
 
-export { default as Button } from "./Button";
-export { default as Input } from "./Input";
-export {
-  default as Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardFooter,
-} from "./Card";
+// Export custom components
+export { UserAvatar } from "../UserAvatar";
 export { default as Notification, useNotification } from "./Notification";

@@ -8,6 +8,7 @@ import UserAvatar from "@/components/UserAvatar";
 import { Button } from "@/components/ui";
 import Icons from "@/components/icons";
 import { IMAGE_PATHS } from "@/lib/constants/images";
+import { Printer, FileText, Files, BarChart2, PieChart } from "lucide-react";
 
 // Navigation configuration
 const NAVIGATION_CONFIG = {
@@ -25,9 +26,9 @@ const NAVIGATION_CONFIG = {
     { name: "Prescriptions", href: "/prescriptions", icon: Icons.Prescription },
   ],
   communication: [
-    { name: "Clinic Fax", href: "/clinic-fax", icon: Icons.Fax },
-    { name: "Pharmacy Fax", href: "/pharmacy-fax", icon: Icons.Fax },
-    { name: "Pharmacy Hardcopy", href: "/pharmacy-hardcopy", icon: Icons.Fax },
+    { name: "Clinic Fax", href: "/clinic-fax", icon: Printer },
+    { name: "Pharmacy Fax", href: "/pharmacy-fax", icon: FileText },
+    { name: "Pharmacy Hardcopy", href: "/pharmacy-hardcopy", icon: Files },
   ],
   tools: [
     { name: "Document Scanner", href: "/scanner", icon: Icons.Scanner },
@@ -40,11 +41,11 @@ const NAVIGATION_CONFIG = {
   ],
   monitoring: [
     { name: "Activity Logs", href: "/activity", icon: Icons.Activity },
-    { name: "Reports", href: "/reports", icon: Icons.Reports },
+    { name: "Reports", href: "/reports", icon: BarChart2 },
     {
       name: "Pharmacy Reports",
       href: "/pharmacy-reports",
-      icon: Icons.Reports,
+      icon: PieChart,
     },
   ],
 };

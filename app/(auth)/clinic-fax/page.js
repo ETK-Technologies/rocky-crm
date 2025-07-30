@@ -344,18 +344,16 @@ export default function ClinicFaxPage() {
       cell: (row) => (
         <div className="flex justify-end gap-2">
           <Button
-            variant="ghost"
+            variant="ghost-view"
             size="sm"
             onClick={() => handleViewFax(row.id)}
-            className="text-purple-600 hover:text-purple-700"
           >
             <Eye className="h-4 w-4" />
           </Button>
           <Button
-            variant="ghost"
+            variant="ghost-delete"
             size="sm"
             onClick={() => handleDeleteFax(row.id)}
-            className="text-purple-600 hover:text-purple-700"
           >
             <Trash2 className="h-4 w-4" />
           </Button>
@@ -414,9 +412,8 @@ export default function ClinicFaxPage() {
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-secondary-900">Clinic Fax</h1>
         <Button
-          variant="default"
+          variant="send"
           size="default"
-          className="bg-green-600 hover:bg-green-700 text-white cursor-pointer"
           onClick={() => setIsSendFaxModalOpen(true)}
         >
           <Send className="h-4 w-4 mr-2" />

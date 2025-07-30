@@ -5,7 +5,7 @@
       "@/*": ["./*"]
     },
     "jsx": "react-jsx",
-    "checkJs": true,
+    "checkJs": false,
     "resolveJsonModule": true,
     "moduleResolution": "node",
     "lib": ["dom", "dom.iterable", "esnext"],

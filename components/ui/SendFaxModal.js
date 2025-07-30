@@ -140,10 +140,9 @@ export default function SendFaxModal({ isOpen, onClose, onSubmit }) {
               <div className="flex items-center gap-3">
                 <Button
                   type="button"
-                  variant="outline"
+                  variant="upload"
                   size="sm"
                   onClick={() => document.getElementById("file-input").click()}
-                  className="bg-secondary-700 text-white cursor-pointer"
                 >
                   <Upload className="h-4 w-4 mr-2" />
                   Choose File
@@ -174,12 +173,7 @@ export default function SendFaxModal({ isOpen, onClose, onSubmit }) {
 
           {/* Submit Button */}
           <div className="flex justify-start pt-4">
-            <Button
-              type="submit"
-              variant="default"
-              size="default"
-              className="bg-blue-600 hover:bg-blue-700 text-white cursor-pointer"
-            >
+            <Button type="submit" variant="send" size="default">
               <Send className="h-4 w-4 mr-2" />
               Send
             </Button>

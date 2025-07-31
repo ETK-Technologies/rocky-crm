@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Card } from "@/components/ui";
 import RockyLogo from "@/components/RockyLogo";
@@ -47,7 +47,22 @@ const EyeOffIcon = () => (
   </svg>
 );
 
-export default function ResetPassword() {
+// Loading component for Suspense fallback
+const LoadingSpinner = () => (
+  <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-primary-100 p-4">
+    <Card className="w-full max-w-md bg-white rounded-xl shadow-xl">
+      <div className="flex flex-col items-center text-center p-8">
+        <div className="mb-8">
+          <RockyLogo size="lg" priority src={IMAGE_PATHS.LOGOS.ROCKY_LOGO} />
+        </div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+        <p className="mt-4 text-secondary-600">Loading...</p>
+      </div>
+    </Card>
+  </div>
+);
+
+function ResetPasswordContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -317,5 +332,13 @@ export default function ResetPassword() {
         </div>
       </Card>
     </div>
+  );
+}
+
+export default function ResetPassword() {
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <ResetPasswordContent />
+    </Suspense>
   );
 }

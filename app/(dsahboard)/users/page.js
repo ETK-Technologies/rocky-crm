@@ -1,7 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Input, Filters, DataTable, UserAvatar } from "@/components/ui";
+import {
+  Button,
+  Input,
+  Filters,
+  DataTable,
+  UserAvatar,
+  QuickActionsFilter,
+} from "@/components/ui";
 import { PageHeader } from "@/components/ui";
 import Icons from "@/components/icons";
 import { Pencil, Trash2, MoreHorizontal, Download, Mail } from "lucide-react";
@@ -65,6 +72,8 @@ export default function UsersPage() {
   const [sortDirection, setSortDirection] = useState("asc");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedRows, setSelectedRows] = useState([]);
+  const [activeUserFilter, setActiveUserFilter] = useState("All");
+  const userFilterActions = ["All", "Trashed"];
 
   // Example data - replace with actual data fetching
   const [users, setUsers] = useState([
@@ -334,13 +343,21 @@ export default function UsersPage() {
   const allUsers = [...users, ...trashedUsers];
   const filteredData = allUsers
     .filter((user) => {
-      if (!searchQuery) return true;
-      const searchLower = searchQuery.toLowerCase();
-      return (
-        user.name.toLowerCase().includes(searchLower) ||
-        user.email.toLowerCase().includes(searchLower) ||
-        user.phone.includes(searchQuery)
-      );
+      // First apply the quick action filter
+      if (activeUserFilter === "Trashed" && user.status !== "trashed")
+        return false;
+      if (activeUserFilter === "All" && user.status === "trashed") return false;
+
+      // Then apply search filter
+      if (searchQuery) {
+        const searchLower = searchQuery.toLowerCase();
+        return (
+          user.name.toLowerCase().includes(searchLower) ||
+          user.email.toLowerCase().includes(searchLower) ||
+          user.phone.includes(searchQuery)
+        );
+      }
+      return true;
     })
     .sort((a, b) => {
       const aValue = a[sortColumn];
@@ -403,6 +420,13 @@ export default function UsersPage() {
         onReset={handleFilterReset}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
+      />
+
+      {/* Quick Actions Filter */}
+      <QuickActionsFilter
+        actions={userFilterActions}
+        activeAction={activeUserFilter}
+        onActionChange={setActiveUserFilter}
       />
 
       {/* Table */}

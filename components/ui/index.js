@@ -14,6 +14,7 @@ export { default as DocumentViewer } from "./DocumentViewer";
 export { default as SendFaxModal } from "./SendFaxModal";
 export { default as PharmacyFaxModal } from "./PharmacyFaxModal";
 export { default as PageHeader } from "./PageHeader";
+export { default as QuickActionsFilter } from "./QuickActionsFilter";
 
 // Export Custom Components
 export { UserAvatar } from "../UserAvatar";

@@ -3,10 +3,24 @@ import React, { useState } from "react";
 import FilterBar from "./components/FilterBar";
 import OrdersTable from "./components/OrdersTable";
 import ordersData from "./data/ordersData";
-import { Button } from "@/components/ui";
+import { Button, QuickActionsFilter } from "@/components/ui";
 import { PageHeader } from "@/components/ui";
 import Icons from "@/components/icons";
 import { Trash2, Eye } from "lucide-react";
+
+const orderStatusActions = [
+  "All",
+  "Pending Payment",
+  "Medical Review",
+  "Processing",
+  "Shipped",
+  "Failed",
+  "Cancelled",
+  "Refunded",
+  "Trashed",
+  "Cancellation Fee Applied",
+  "Consultation Complete",
+];
 
 const defaultFilters = [
   {
@@ -78,8 +92,13 @@ const defaultFilters = [
   },
 ];
 
-function filterOrders(data, filters, searchQuery) {
+function filterOrders(data, filters, searchQuery, activeStatus) {
   return data.filter((order) => {
+    // First check active status filter
+    if (activeStatus !== "All" && order.status !== activeStatus) {
+      return false;
+    }
+
     let match = true;
     filters.forEach((filter) => {
       if (filter.type === "select" && filter.value) {
@@ -116,6 +135,7 @@ const OrderPage = () => {
   const [sortDirection, setSortDirection] = useState("asc");
   const [selectedRows, setSelectedRows] = useState([]);
   const [pageSize, setPageSize] = useState(10);
+  const [activeStatus, setActiveStatus] = useState("All");
 
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
@@ -136,17 +156,20 @@ const OrderPage = () => {
     setSortDirection(direction);
   };
 
-  const filteredData = filterOrders(ordersData, filters, searchQuery).sort(
-    (a, b) => {
-      const aValue = a[sortColumn];
-      const bValue = b[sortColumn];
-      const modifier = sortDirection === "asc" ? 1 : -1;
-      if (typeof aValue === "string") {
-        return aValue.localeCompare(bValue) * modifier;
-      }
-      return (aValue - bValue) * modifier;
+  const filteredData = filterOrders(
+    ordersData,
+    filters,
+    searchQuery,
+    activeStatus
+  ).sort((a, b) => {
+    const aValue = a[sortColumn];
+    const bValue = b[sortColumn];
+    const modifier = sortDirection === "asc" ? 1 : -1;
+    if (typeof aValue === "string") {
+      return aValue.localeCompare(bValue) * modifier;
     }
-  );
+    return (aValue - bValue) * modifier;
+  });
 
   return (
     <div className="space-y-6">
@@ -186,6 +209,11 @@ const OrderPage = () => {
         onReset={handleFilterReset}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
+      />
+      <QuickActionsFilter
+        actions={orderStatusActions}
+        activeAction={activeStatus}
+        onActionChange={setActiveStatus}
       />
       <OrdersTable
         orders={filteredData}

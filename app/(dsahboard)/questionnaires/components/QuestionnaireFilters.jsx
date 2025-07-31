@@ -1,6 +1,6 @@
 "use client";
 
-import { Filters } from "@/components/ui";
+import { Filters, QuickActionsFilter } from "@/components/ui";
 import { useState } from "react";
 
 const QuestionnaireFilters = ({
@@ -120,42 +120,20 @@ const QuestionnaireFilters = ({
   };
 
   return (
-    <div className="space-y-4">
-      {/* Advanced Filters */}
-      <div>
-        <Filters
-          filters={filters}
-          onFilterChange={handleFilterChange}
-          onReset={handleFilterReset}
-          onApply={handleApply}
-          className="border-0 shadow-none bg-transparent"
-          searchQuery={searchQuery}
-          onSearchChange={handleSearch}
-        />
-      </div>
-
-      {/* Category Filters */}
-      <div className="mb-6">
-        <div className="flex items-center relative">
-          {categories.map((category, index) => (
-            <button
-              key={category}
-              onClick={() => handleCategoryChange(category)}
-              className={`font-medium transition-all duration-200 relative px-4 py-2 ${
-                activeCategory === category
-                  ? "text-secondary-900"
-                  : "text-secondary-500 hover:text-secondary-700"
-              }`}
-            >
-              {category}
-              {activeCategory === category && (
-                <div className="absolute -bottom-2 left-0 right-0 h-0.5 bg-primary-600 -mx-1 z-10"></div>
-              )}
-            </button>
-          ))}
-        </div>
-        <div className="h-px bg-secondary-300 mt-2"></div>
-      </div>
+    <div>
+      <Filters
+        filters={filters}
+        onFilterChange={handleFilterChange}
+        onReset={handleFilterReset}
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+      />
+      
+      <QuickActionsFilter
+        actions={categories}
+        activeAction={activeCategory}
+        onActionChange={handleCategoryChange}
+      />
     </div>
   );
 };

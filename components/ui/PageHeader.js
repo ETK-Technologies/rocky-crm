@@ -1,4 +1,12 @@
-const PageHeader = ({ icon: IconComponent, title, description }) => {
+import Icons from "@/components/icons";
+
+const PageHeader = ({
+  icon: IconComponent,
+  title,
+  description,
+  onBack,
+  backLabel = "Back",
+}) => {
   return (
     <div className="flex items-center gap-4 mb-3">
       <div className="flex items-center justify-center w-12 h-12 bg-primary-100 rounded-xl">
@@ -6,10 +14,23 @@ const PageHeader = ({ icon: IconComponent, title, description }) => {
       </div>
       <div>
         <h1 className="text-3xl font-bold text-secondary-900">{title}</h1>
-        <div className="flex items-center gap-2 mt-1">
-          <div className="w-1 h-4 bg-primary-600 rounded-full"></div>
-          <p className="text-secondary-600 text-sm">{description}</p>
-        </div>
+        {description && (
+          <div className="flex items-center gap-2 mt-1">
+            <div className="w-1 h-4 bg-primary-600 rounded-full"></div>
+            <p className="text-secondary-600 text-sm">{description}</p>
+          </div>
+        )}
+        {onBack && (
+          <div className="mt-2">
+            <button
+              onClick={onBack}
+              className="inline-flex items-center gap-2 text-sm text-primary-600 hover:text-primary-700 transition-colors"
+            >
+              <Icons.Collapse className="w-4 h-4" />
+              {backLabel}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

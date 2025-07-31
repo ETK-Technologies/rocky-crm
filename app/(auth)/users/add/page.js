@@ -63,12 +63,13 @@ export default function AddUserPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center gap-4">
+      <div className="">
+      <h1 className="text-2xl font-bold text-secondary-900">Add New User</h1>
+
         <Button variant="ghost" size="sm" onClick={handleBack}>
-          <ArrowLeft className="h-4 w-4 mr-2" />
+          <ArrowLeft className="h-4 w-4 mr-0" />
           Back to Users
         </Button>
-        <h1 className="text-2xl font-bold text-secondary-900">Add New User</h1>
       </div>
 
       {/* Tabs */}
@@ -368,7 +369,7 @@ export default function AddUserPage() {
         )}
 
         {/* Footer Actions */}
-        <CardFooter className="flex justify-between pt-6">
+        <CardFooter className="flex justify-between px-0 pt-6">
           <Button
             type="button"
             variant="outline"

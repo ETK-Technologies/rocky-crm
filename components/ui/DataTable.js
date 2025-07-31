@@ -17,7 +17,6 @@ import {
   TableHead,
   TableRow,
   TableCell,
-  Checkbox,
   Button,
 } from "./index";
 import { cn } from "@/lib/utils";
@@ -31,9 +30,6 @@ const DataTable = React.forwardRef(
       sortColumn,
       sortDirection,
       className,
-      selectable = false,
-      selectedRows = [],
-      onSelectedRowsChange,
       pageSize = 10,
       ...props
     },
@@ -58,20 +54,7 @@ const DataTable = React.forwardRef(
       );
     };
 
-    const handleSelectAll = (checked) => {
-      if (onSelectedRowsChange) {
-        onSelectedRowsChange(checked ? paginatedData.map((row) => row.id) : []);
-      }
-    };
 
-    const handleSelectRow = (checked, rowId) => {
-      if (onSelectedRowsChange) {
-        const newSelected = checked
-          ? [...selectedRows, rowId]
-          : selectedRows.filter((id) => id !== rowId);
-        onSelectedRowsChange(newSelected);
-      }
-    };
 
     // Pagination logic
     const totalPages = Math.ceil(data.length / pageSize);
@@ -82,13 +65,7 @@ const DataTable = React.forwardRef(
       setCurrentPage(page);
     };
 
-    const isAllSelected =
-      paginatedData.length > 0 &&
-      paginatedData.every((row) => selectedRows.includes(row.id));
-    const isIndeterminate =
-      selectedRows.length > 0 &&
-      paginatedData.some((row) => selectedRows.includes(row.id)) &&
-      !isAllSelected;
+
 
     return (
       <div className="space-y-4">
@@ -96,16 +73,6 @@ const DataTable = React.forwardRef(
           <Table ref={ref} className={className} {...props}>
             <TableHeader>
               <TableRow>
-                {selectable && (
-                  <TableHead className="w-[50px] pr-0">
-                    <Checkbox
-                      checked={isAllSelected}
-                      onCheckedChange={handleSelectAll}
-                      aria-label="Select all"
-                      {...(isIndeterminate ? { indeterminate: true } : {})}
-                    />
-                  </TableHead>
-                )}
                 {columns.map((column) => (
                   <TableHead
                     key={column.id}
@@ -128,21 +95,7 @@ const DataTable = React.forwardRef(
               {paginatedData.map((row, rowIndex) => (
                 <TableRow
                   key={rowIndex}
-                  className={cn(
-                    selectedRows.includes(row.id) && "bg-primary-50/50"
-                  )}
                 >
-                  {selectable && (
-                    <TableCell className="pr-0">
-                      <Checkbox
-                        checked={selectedRows.includes(row.id)}
-                        onCheckedChange={(checked) =>
-                          handleSelectRow(checked, row.id)
-                        }
-                        aria-label={`Select row ${rowIndex + 1}`}
-                      />
-                    </TableCell>
-                  )}
                   {columns.map((column) => (
                     <TableCell key={column.id} className={column.className}>
                       {column.cell ? column.cell(row) : row[column.id]}
@@ -153,7 +106,7 @@ const DataTable = React.forwardRef(
               {data.length === 0 && (
                 <TableRow>
                   <TableCell
-                    colSpan={selectable ? columns.length + 1 : columns.length}
+                    colSpan={columns.length}
                     className="h-32 text-center text-secondary-500"
                   >
                     No data available

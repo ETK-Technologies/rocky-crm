@@ -11,7 +11,6 @@ import { X } from "lucide-react";
 export default function UsersPage() {
   const router = useRouter();
   const { showSuccess, NotificationContainer } = useNotification();
-  const [activeTab, setActiveTab] = useState("all");
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
   const [filters, setFilters] = useState([
@@ -57,7 +56,6 @@ export default function UsersPage() {
   const [sortColumn, setSortColumn] = useState("name");
   const [sortDirection, setSortDirection] = useState("asc");
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedRows, setSelectedRows] = useState([]);
 
   // Example data - replace with actual data fetching
   const [users, setUsers] = useState([
@@ -71,10 +69,47 @@ export default function UsersPage() {
       createdBy: { name: "Admin User", timestamp: "2 days ago" },
       updatedBy: { name: "Admin User", timestamp: "1 day ago" },
       tags: [],
+      status: "active",
     },
-    // Add more example users...
+    {
+      id: 2,
+      name: "Jane Smith",
+      email: "jane@example.com",
+      phone: "(123) 456-7891",
+      province: "QC",
+      dateOfBirth: "1985-05-15",
+      createdBy: { name: "Admin User", timestamp: "1 week ago" },
+      updatedBy: { name: "Admin User", timestamp: "3 days ago" },
+      tags: ["VIP"],
+      status: "active",
+    },
+    {
+      id: 3,
+      name: "Bob Johnson",
+      email: "bob@example.com",
+      phone: "(123) 456-7892",
+      province: "ON",
+      dateOfBirth: "1978-12-20",
+      createdBy: { name: "Admin User", timestamp: "2 weeks ago" },
+      updatedBy: { name: "Admin User", timestamp: "1 week ago" },
+      tags: [],
+      status: "trashed",
+    },
   ]);
-  const [trashedUsers, setTrashedUsers] = useState([]);
+  const [trashedUsers, setTrashedUsers] = useState([
+    {
+      id: 4,
+      name: "Deleted User",
+      email: "deleted@example.com",
+      phone: "(123) 456-7893",
+      province: "BC",
+      dateOfBirth: "1992-08-10",
+      createdBy: { name: "Admin User", timestamp: "3 weeks ago" },
+      updatedBy: { name: "Admin User", timestamp: "1 week ago" },
+      tags: [],
+      status: "trashed",
+    },
+  ]);
 
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
@@ -96,21 +131,7 @@ export default function UsersPage() {
     setSortDirection(direction);
   };
 
-  const handleBulkAction = (action) => {
-    switch (action) {
-      case "delete":
-        console.log("Delete users:", selectedRows);
-        break;
-      case "export":
-        console.log("Export users:", selectedRows);
-        break;
-      case "email":
-        console.log("Email users:", selectedRows);
-        break;
-      default:
-        break;
-    }
-  };
+
 
   // Delete logic
   const handleDeleteClick = (user) => {
@@ -118,10 +139,9 @@ export default function UsersPage() {
     setShowDeleteDialog(true);
   };
   const handleDeleteConfirm = () => {
-    if (activeTab === "all") {
+    if (userToDelete.status === "active") {
       setUsers((prev) => prev.filter((u) => u.id !== userToDelete.id));
-      setTrashedUsers((prev) => [...prev, userToDelete]);
-      setActiveTab("trashed");
+      setTrashedUsers((prev) => [...prev, { ...userToDelete, status: "trashed" }]);
       showSuccess("Deleted successfully", "User has been moved to trash.");
     } else {
       setTrashedUsers((prev) => prev.filter((u) => u.id !== userToDelete.id));
@@ -142,7 +162,10 @@ export default function UsersPage() {
       header: "Name",
       sortable: true,
       cell: (row) => (
-        <div className="flex items-center gap-3">
+        <div 
+          className="flex items-center gap-3 cursor-pointer hover:bg-secondary-50 p-2 rounded-md transition-colors"
+          onClick={() => router.push(`/users/${row.id}/edit`)}
+        >
           <UserAvatar
             user={{
               name: row.name,
@@ -178,6 +201,20 @@ export default function UsersPage() {
       header: "Date Of Birth",
       sortable: true,
     },
+    // {
+    //   id: "status",
+    //   header: "Status",
+    //   sortable: true,
+    //   cell: (row) => (
+    //     <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+    //       row.status === "active" 
+    //         ? "bg-green-100 text-green-800" 
+    //         : "bg-red-100 text-red-800"
+    //     }`}>
+    //       {row.status === "active" ? "Active" : "Trashed"}
+    //     </span>
+    //   ),
+    // },
     {
       id: "createdBy",
       header: "Created By",
@@ -205,16 +242,14 @@ export default function UsersPage() {
       header: "Actions",
       className: "text-right",
       cell: (row) => (
-        <div className="flex justify-end gap-2">
-          {activeTab === "all" && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => router.push(`/users/${row.id}/edit`)}
-            >
-              <Pencil className="h-4 w-4" />
-            </Button>
-          )}
+        <div className="flex justify-center gap-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => router.push(`/users/${row.id}/edit`)}
+          >
+            <Pencil className="h-4 w-4" />
+          </Button>
           <Button
             variant="ghost"
             size="sm"
@@ -223,7 +258,10 @@ export default function UsersPage() {
           >
             <Trash2 className="h-4 w-4" />
           </Button>
-          <Button variant="ghost" size="sm">
+          <Button 
+            variant="ghost" 
+            size="sm"
+          >
             <MoreHorizontal className="h-4 w-4" />
           </Button>
         </div>
@@ -231,8 +269,9 @@ export default function UsersPage() {
     },
   ];
 
-  // Filtered data
-  const filteredData = (activeTab === "all" ? users : trashedUsers)
+  // Combine all users and filter
+  const allUsers = [...users, ...trashedUsers];
+  const filteredData = allUsers
     .filter((user) => {
       if (!searchQuery) return true;
       const searchLower = searchQuery.toLowerCase();
@@ -259,63 +298,8 @@ export default function UsersPage() {
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-secondary-900">Users</h1>
         <div className="flex gap-2">
-          {selectedRows.length > 0 && (
-            <>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => handleBulkAction("email")}
-              >
-                <Mail className="h-4 w-4 mr-2" />
-                Email Selected
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => handleBulkAction("export")}
-              >
-                <Download className="h-4 w-4 mr-2" />
-                Export Selected
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                className="text-red-500"
-                onClick={() => handleBulkAction("delete")}
-              >
-                <Trash2 className="h-4 w-4 mr-2" />
-                Delete Selected
-              </Button>
-            </>
-          )}
           <Button onClick={() => router.push("/users/add")}>Add User</Button>
         </div>
-      </div>
-
-      {/* Tabs */}
-      <div className="border-b border-secondary-200 mb-2">
-        <nav className="flex space-x-8">
-          <button
-            onClick={() => setActiveTab("all")}
-            className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
-              activeTab === "all"
-                ? "border-primary text-primary"
-                : "border-transparent text-secondary-500 hover:text-secondary-700"
-            }`}
-          >
-            All
-          </button>
-          <button
-            onClick={() => setActiveTab("trashed")}
-            className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
-              activeTab === "trashed"
-                ? "border-primary text-primary"
-                : "border-transparent text-secondary-500 hover:text-secondary-700"
-            }`}
-          >
-            Trashed
-          </button>
-        </nav>
       </div>
 
       {/* Filters with inline search */}
@@ -334,9 +318,6 @@ export default function UsersPage() {
         sortColumn={sortColumn}
         sortDirection={sortDirection}
         onSort={handleSort}
-        selectable
-        selectedRows={selectedRows}
-        onSelectedRowsChange={setSelectedRows}
       />
 
       {/* Delete Dialog */}

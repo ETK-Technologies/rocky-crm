@@ -8,6 +8,7 @@ import { CalendarIcon, ChevronDown, ChevronUp, Search } from "lucide-react";
 import { format } from "date-fns";
 import { Calendar } from "./Calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "./Popover";
+import useMediaQuery from "@/lib/hooks/useMediaQuery";
 
 export function DateRangePicker({
   startDate,
@@ -95,8 +96,15 @@ export function Filters({
   searchQuery,
   onSearchChange,
 }) {
+  const isMobile = useMediaQuery("(max-width: 768px)");
   const [localFilters, setLocalFilters] = React.useState(filters);
-  const [isCollapsed, setIsCollapsed] = React.useState(false);
+  const [isCollapsed, setIsCollapsed] = React.useState(() => isMobile);
+
+  // Update collapse state when screen size changes
+  React.useEffect(() => {
+    setIsCollapsed(isMobile);
+  }, [isMobile]);
+
   const hasActiveFilters = localFilters.some((filter) => {
     if (filter.type === "date-range") {
       return filter.value?.start || filter.value?.end;
@@ -132,7 +140,7 @@ export function Filters({
 
   return (
     <div className={cn("bg-secondary-50/50 p-4 rounded-lg", className)}>
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
           className="flex items-center gap-2 text-sm font-medium text-secondary-700 hover:text-secondary-900"
@@ -145,15 +153,15 @@ export function Filters({
           )}
         </button>
 
-        <div className="flex items-center gap-4">
-          <div className="relative w-[320px]">
+        <div className="flex flex-col md:flex-row items-stretch md:items-center gap-4 w-full md:w-auto">
+          <div className="relative flex-1 md:w-[320px]">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-secondary-500" />
             <Input
               type="search"
               placeholder="Search by name, email, or phone..."
               value={searchQuery}
               onChange={(e) => onSearchChange?.(e.target.value)}
-              className="pl-9"
+              className="pl-9 w-full"
             />
           </div>
 
@@ -162,7 +170,7 @@ export function Filters({
               variant="ghost"
               size="sm"
               onClick={handleReset}
-              className="text-secondary-500 hover:text-secondary-700"
+              className="text-secondary-500 hover:text-secondary-700 md:self-center"
             >
               Clear all
             </Button>
@@ -171,10 +179,13 @@ export function Filters({
       </div>
 
       {!isCollapsed && (
-        <div className="flex flex-wrap items-end gap-4">
+        <div className="flex flex-col md:flex-row flex-wrap items-stretch md:items-end gap-4">
           {/* Date Range Filters */}
           {dateFilters.map((filter) => (
-            <div key={filter.id} className="flex-1 min-w-[300px] space-y-1.5">
+            <div
+              key={filter.id}
+              className="flex-1 min-w-0 md:min-w-[300px] space-y-1.5"
+            >
               <label className="text-xs font-medium text-secondary-700">
                 {filter.label}
               </label>
@@ -200,7 +211,7 @@ export function Filters({
 
           {/* Select Filters */}
           {selectFilters.map((filter) => (
-            <div key={filter.id} className="w-[200px] space-y-1.5">
+            <div key={filter.id} className="w-full md:w-[200px] space-y-1.5">
               <label className="text-xs font-medium text-secondary-700">
                 {filter.label}
               </label>
@@ -214,11 +225,20 @@ export function Filters({
           ))}
 
           {/* Action Buttons */}
-          <div className="flex gap-2 ml-auto">
-            <Button variant="outline" size="sm" onClick={handleReset}>
+          <div className="flex gap-2 w-full md:w-auto md:ml-auto">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleReset}
+              className="flex-1 md:flex-none"
+            >
               Reset
             </Button>
-            <Button size="sm" onClick={handleApply}>
+            <Button
+              size="sm"
+              onClick={handleApply}
+              className="flex-1 md:flex-none"
+            >
               Apply Filters
             </Button>
           </div>

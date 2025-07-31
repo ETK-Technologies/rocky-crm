@@ -20,7 +20,7 @@ function OrderDetailsCard({ order }) {
         <div className="bg-white rounded-xl shadow-md border border-gray-100 p-4 md:p-8 w-full">
             <div className="flex flex-wrap gap-4 items-center mb-6">
                 <span className="text-2xl font-bold">Order #{order.id}</span>
-                {/* <span className="px-2 py-1 rounded bg-blue-100 text-blue-700 text-sm font-semibold">{order.orderType}</span> */}
+
                 <span className={`px-3 py-1 rounded text-sm font-semibold ${order.status === "Pending payment" ? "bg-blue-100 text-blue-800"
                     : order.status === "Medical Review" ? "bg-orange-100 text-orange-800"
                         : order.status === "Processing" ? "bg-gray-100 text-gray-800"

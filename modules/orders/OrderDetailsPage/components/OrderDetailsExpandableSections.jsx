@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ExpandableSection from "./ExpandableSection";
 import ProductsSummaryCard from "./ProductsSummaryCard";
+import HardcopyCard from "./HardcopyCard";
 
 const sections = [
     { key: "productsSummary", label: "Products Summary" },
@@ -32,7 +33,8 @@ function OrderDetailsExpandableSections({ order }) {
                     {section.key === "productsSummary" && (
                         <ProductsSummaryCard />
                     )}
-                    {(section.key !== "productsSummary") && (
+                    {section.key === "hardcopy" && <HardcopyCard />}
+                    {(section.key !== "productsSummary" && section.key !== "hardcopy") && (
                         <div className="text-gray-500 text-sm">No data available.</div>
                     )}
                 </ExpandableSection>

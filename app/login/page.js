@@ -108,6 +108,14 @@ export default function Login() {
     setShowPassword(!showPassword);
   };
 
+  const handleForgotPassword = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Navigate to forgot password page
+    router.push("/forgot-password");
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-primary-100">
@@ -202,8 +210,8 @@ export default function Login() {
 
                 <button
                   type="button"
-                  onClick={() => router.push("/forgot-password")}
-                  className="text-sm text-primary-600 hover:text-primary-700 transition-colors"
+                  onClick={handleForgotPassword}
+                  className="text-sm text-primary-600 hover:text-primary-700 transition-colors focus:outline-none hover:underline"
                   disabled={isSubmitting}
                 >
                   Forgot password?

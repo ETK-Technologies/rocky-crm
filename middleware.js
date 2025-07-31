@@ -7,7 +7,7 @@ export function middleware(request) {
   }
 
   const path = request.nextUrl.pathname;
-  const isPublicPath = path === '/login';
+  const isPublicPath = path === '/login' || path === '/forgot-password' || path === '/reset-password';
 
   // Get auth token from cookie
   const authToken = request.cookies.get('rocky_crm_token')?.value;

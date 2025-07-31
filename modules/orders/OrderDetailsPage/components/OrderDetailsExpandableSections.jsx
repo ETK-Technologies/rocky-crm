@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ExpandableSection from "./ExpandableSection";
+import ProductsSummaryCard from "./ProductsSummaryCard";
 
 const sections = [
     { key: "productsSummary", label: "Products Summary" },
@@ -20,6 +21,7 @@ function OrderDetailsExpandableSections({ order }) {
 
     return (
         <div className="flex flex-col gap-4 w-full">
+
             {sections.map(section => (
                 <ExpandableSection
                     key={section.key}
@@ -27,7 +29,12 @@ function OrderDetailsExpandableSections({ order }) {
                     expanded={expanded.includes(section.key)}
                     onToggle={() => toggleSection(section.key)}
                 >
-                    <div className="text-gray-500 text-sm">No data available.</div>
+                    {section.key === "productsSummary" && (
+                        <ProductsSummaryCard />
+                    )}
+                    {(section.key !== "productsSummary") && (
+                        <div className="text-gray-500 text-sm">No data available.</div>
+                    )}
                 </ExpandableSection>
             ))}
         </div>

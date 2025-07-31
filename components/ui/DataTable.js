@@ -31,6 +31,9 @@ const DataTable = React.forwardRef(
       sortDirection,
       className,
       pageSize = 10,
+      selectable,
+      selectedRows = [],
+      onSelectedRowsChange,
       ...props
     },
     ref
@@ -44,6 +47,23 @@ const DataTable = React.forwardRef(
       }
     };
 
+    const handleSelectAll = (e) => {
+      if (onSelectedRowsChange) {
+        onSelectedRowsChange(
+          e.target.checked ? paginatedData.map((row) => row.id) : []
+        );
+      }
+    };
+
+    const handleSelectRow = (rowId) => {
+      if (onSelectedRowsChange) {
+        const newSelectedRows = selectedRows.includes(rowId)
+          ? selectedRows.filter((id) => id !== rowId)
+          : [...selectedRows, rowId];
+        onSelectedRowsChange(newSelectedRows);
+      }
+    };
+
     const getSortIcon = (columnId) => {
       if (sortColumn !== columnId)
         return <ChevronsUpDown className="w-4 h-4 ml-1" />;
@@ -54,8 +74,6 @@ const DataTable = React.forwardRef(
       );
     };
 
-
-
     // Pagination logic
     const totalPages = Math.ceil(data.length / pageSize);
     const startIndex = (currentPage - 1) * pageSize;
@@ -64,8 +82,6 @@ const DataTable = React.forwardRef(
     const handlePageChange = (page) => {
       setCurrentPage(page);
     };
-
-
 
     return (
       <div className="space-y-4">
@@ -84,8 +100,23 @@ const DataTable = React.forwardRef(
                     )}
                   >
                     <div className="flex items-center">
-                      {column.header}
-                      {column.sortable && getSortIcon(column.id)}
+                      {column.id === "select" && selectable ? (
+                        <input
+                          type="checkbox"
+                          className="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                          checked={
+                            selectedRows.length === paginatedData.length &&
+                            paginatedData.length > 0
+                          }
+                          onChange={handleSelectAll}
+                          onClick={(e) => e.stopPropagation()}
+                        />
+                      ) : (
+                        <>
+                          {column.header}
+                          {column.sortable && getSortIcon(column.id)}
+                        </>
+                      )}
                     </div>
                   </TableHead>
                 ))}
@@ -95,10 +126,25 @@ const DataTable = React.forwardRef(
               {paginatedData.map((row, rowIndex) => (
                 <TableRow
                   key={rowIndex}
+                  className={
+                    selectedRows.includes(row.id) ? "bg-primary-50" : ""
+                  }
                 >
                   {columns.map((column) => (
                     <TableCell key={column.id} className={column.className}>
-                      {column.cell ? column.cell(row) : row[column.id]}
+                      {column.id === "select" && selectable ? (
+                        <input
+                          type="checkbox"
+                          className="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                          checked={selectedRows.includes(row.id)}
+                          onChange={() => handleSelectRow(row.id)}
+                          onClick={(e) => e.stopPropagation()}
+                        />
+                      ) : column.cell ? (
+                        column.cell(row)
+                      ) : (
+                        row[column.id]
+                      )}
                     </TableCell>
                   ))}
                 </TableRow>

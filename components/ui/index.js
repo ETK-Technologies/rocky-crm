@@ -11,6 +11,7 @@ export * from "./Filters";
 export * from "./Checkbox";
 export { default as DocumentViewer } from "./DocumentViewer";
 export { default as SendFaxModal } from "./SendFaxModal";
+export { default as PharmacyFaxModal } from "./PharmacyFaxModal";
 
 // Export Custom Components
 export { UserAvatar } from "../UserAvatar";

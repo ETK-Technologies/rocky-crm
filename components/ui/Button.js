@@ -42,6 +42,8 @@ const buttonVariants = cva(
           "text-yellow-600 hover:text-yellow-700 hover:bg-yellow-50",
         "ghost-send":
           "text-purple-600 hover:text-purple-700 hover:bg-purple-50",
+        "ghost-download":
+          "text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",

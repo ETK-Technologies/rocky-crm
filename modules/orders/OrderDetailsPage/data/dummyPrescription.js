@@ -14,5 +14,5 @@ export const dummyPrescription = {
     duration: "1 Month",
     refills: "11 Refills",
     instructions: "Take 1 to 2 tabs prn. Max dose 2 tabs in 24hrs",
-    signature: "✍️",
+    signature: "Dummy Signature",
 };

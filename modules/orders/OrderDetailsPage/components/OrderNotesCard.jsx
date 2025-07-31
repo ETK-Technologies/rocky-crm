@@ -53,7 +53,7 @@ function OrderNotesCard() {
                     onClick={() => setNotes(initialNotes)}
                     title="Reload Notes"
                 >
-                    Reload Notes <span className="material-icons text-base">refresh</span>
+                    Reload Notes
                 </button>
             </div>
             <div className="overflow-y-auto max-h-64 mb-4 pr-2">

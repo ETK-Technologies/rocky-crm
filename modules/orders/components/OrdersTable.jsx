@@ -23,7 +23,7 @@ function OrdersTable({ orders }) {
                             <TableHead>Tags/Categories</TableHead>
                             <TableHead>Date</TableHead>
                             <TableHead>Status</TableHead>
-                            <TableHead>Province</TableHead>
+                            <TableHead>Shipping</TableHead>
                             <TableHead>Order Type</TableHead>
                             <TableHead>Order Total</TableHead>
                             <TableHead>Order Items</TableHead>

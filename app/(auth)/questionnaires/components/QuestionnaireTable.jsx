@@ -552,7 +552,14 @@ const QuestionnaireTable = ({
       sortable: true,
       cell: (row) => (
         <div>
-          <div className="font-medium">{row.user.name}</div>
+          <div className="font-medium">
+            <a
+              href={`/questionnaires/${row.id}/view`}
+              className="text-primary-600 hover:text-primary-700 hover:underline cursor-pointer transition-colors"
+            >
+              {row.user.name}
+            </a>
+          </div>
           <div className="text-sm text-secondary-500">{row.user.email}</div>
           <div className="text-xs text-secondary-400">
             Entry #{row.user.entryNumber}
@@ -749,6 +756,40 @@ const QuestionnaireTable = ({
           <div className="text-xs text-secondary-500">
             Created: {row.date.created}
           </div>
+        </div>
+      ),
+    },
+    {
+      id: "actions",
+      header: "Actions",
+      sortable: false,
+      cell: (row) => (
+        <div className="flex items-center space-x-2">
+          <a
+            href={`/questionnaires/${row.id}/view`}
+            className="inline-flex items-center px-3 py-1.5 text-xs font-medium text-primary-600 bg-primary-50 border border-primary-200 rounded-md hover:bg-primary-100 hover:text-primary-700 transition-colors"
+          >
+            <svg
+              className="w-3 h-3 mr-1"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+              />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+              />
+            </svg>
+            View
+          </a>
         </div>
       ),
     },

@@ -61,6 +61,9 @@ export default function Login() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
+        // Small delay to ensure cookies are set if user just logged in
+        await new Promise((resolve) => setTimeout(resolve, 100));
+
         if (authService.isAuthenticated()) {
           window.location.href = "/dashboard";
         }
@@ -96,6 +99,10 @@ export default function Login() {
 
     try {
       await authService.login(formData);
+
+      // Small delay to ensure cookie is set before redirecting
+      await new Promise((resolve) => setTimeout(resolve, 200));
+
       window.location.href = "/dashboard";
     } catch (err) {
       setError("Login failed. Please try again.");

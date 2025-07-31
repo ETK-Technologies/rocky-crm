@@ -287,24 +287,44 @@ export default function UsersPage() {
       className: "text-right",
       cell: (row) => (
         <div className="flex justify-center gap-2">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => router.push(`/users/${row.id}/edit`)}
-          >
-            <Pencil className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="text-red-500"
-            onClick={() => handleDeleteClick(row)}
-          >
-            <Trash2 className="h-4 w-4" />
-          </Button>
-          <Button variant="ghost" size="sm">
-            <MoreHorizontal className="h-4 w-4" />
-          </Button>
+          <div className="relative group flex flex-col items-center">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => router.push(`/users/${row.id}/edit`)}
+              className="bg-white hover:bg-gray-50 text-gray-500 hover:text-gray-900"
+            >
+              <Pencil className="h-4 w-4" />
+            </Button>
+            <span className="absolute -top-8 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 transition bg-gray-900 text-white text-xs rounded px-2 py-1 whitespace-nowrap z-10">
+              Edit User
+            </span>
+          </div>
+          <div className="relative group flex flex-col items-center">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => handleDeleteClick(row)}
+              className="bg-white hover:bg-gray-50 text-red-500 hover:text-red-700"
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+            <span className="absolute -top-8 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 transition bg-gray-900 text-white text-xs rounded px-2 py-1 whitespace-nowrap z-10">
+              Delete User
+            </span>
+          </div>
+          <div className="relative group flex flex-col items-center">
+            <Button
+              variant="outline"
+              size="sm"
+              className="bg-white hover:bg-gray-50 text-gray-500 hover:text-gray-900"
+            >
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+            <span className="absolute -top-8 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 transition bg-gray-900 text-white text-xs rounded px-2 py-1 whitespace-nowrap z-10">
+              More Actions
+            </span>
+          </div>
         </div>
       ),
     },

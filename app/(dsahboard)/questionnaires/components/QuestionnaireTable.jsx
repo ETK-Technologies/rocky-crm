@@ -2,6 +2,7 @@
 
 import { DataTable, Button } from "@/components/ui";
 import { useState, useMemo } from "react";
+import { Eye } from "lucide-react";
 
 const QuestionnaireTable = ({
   filters = [],
@@ -575,73 +576,70 @@ const QuestionnaireTable = ({
         const getTagStyle = (tag) => {
           switch (tag) {
             case "Out of refills":
-              return "bg-blue-100 text-blue-800 border border-blue-200";
+              return "bg-blue-50 text-blue-700";
             case "Flagged":
-              return "bg-red-100 text-red-800 border border-red-200";
+              return "bg-red-50 text-red-700";
             case "Needs Immediate Attention":
-              return "bg-orange-100 text-orange-800 border border-orange-200";
+              return "bg-orange-50 text-orange-700";
             case "Delayed":
-              return "bg-red-100 text-red-800 border border-red-200";
+              return "bg-red-50 text-red-700";
             case "Pending Consent":
-              return "bg-yellow-100 text-yellow-800 border border-yellow-200";
+              return "bg-yellow-50 text-yellow-700";
             case "Possible Dose Change":
-              return "bg-purple-100 text-purple-800 border border-purple-200";
+              return "bg-purple-50 text-purple-700";
             case "Missing or Incomplete Questionnaire":
-              return "bg-gray-100 text-gray-800 border border-gray-200";
+              return "bg-gray-50 text-gray-700";
             case "Pending Consultation":
-              return "bg-blue-100 text-blue-800 border border-blue-200";
+              return "bg-blue-50 text-blue-700";
             case "Pending Order from Patient":
-              return "bg-indigo-100 text-indigo-800 border border-indigo-200";
+              return "bg-indigo-50 text-indigo-700";
             case "Special Delivery Instructions":
-              return "bg-green-100 text-green-800 border border-green-200";
+              return "bg-green-50 text-green-700";
             case "Unverified, Missing ID":
-              return "bg-yellow-100 text-yellow-800 border border-yellow-200";
+              return "bg-yellow-50 text-yellow-700";
             case "Duplicate":
-              return "bg-gray-100 text-gray-800 border border-gray-200";
+              return "bg-gray-50 text-gray-700";
             default:
-              return "bg-gray-100 text-gray-800 border border-gray-200";
-          }
-        };
-
-        const getTagIcon = (tag) => {
-          switch (tag) {
-            case "Flagged":
-            case "Needs Immediate Attention":
-            case "Delayed":
-              return "⚠️ ";
-            case "Missing or Incomplete Questionnaire":
-              return "❌ ";
-            case "Pending Consent":
-              return "⏳ ";
-            case "Possible Dose Change":
-              return "💊 ";
-            case "Special Delivery Instructions":
-              return "🚚 ";
-            case "Duplicate":
-              return "📋 ";
-            case "Out of refills":
-              return "❌ ";
-            case "Unverified, Missing ID":
-              return "🆔 ";
-            default:
-              return "";
+              return "bg-gray-50 text-gray-700";
           }
         };
 
         return (
           <span
-            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getTagStyle(
+            className={`inline-flex items-center gap-1.5 ${getTagStyle(
               row.tags
-            )}`}
+            )} px-2.5 py-1.5 rounded-full text-xs font-medium`}
           >
-            {getTagIcon(row.tags)}
             {row.tags}
           </span>
         );
       },
     },
-    { id: "form", header: "Form", sortable: true },
-    { id: "status", header: "Approval Status", sortable: true },
+    {
+      id: "form",
+      header: "Form",
+      sortable: true,
+    },
+    {
+      id: "status",
+      header: "Approval Status",
+      sortable: true,
+      cell: (row) => (
+        <span
+          className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-medium ${
+            row.status === "Pending"
+              ? "bg-blue-50 text-blue-700"
+              : row.status === "Approved"
+              ? "bg-green-50 text-green-700"
+              : row.status === "Rejected"
+              ? "bg-red-50 text-red-700"
+              : "bg-gray-50 text-gray-700"
+          }`}
+        >
+          {row.status}
+        </span>
+      ),
+    },
     {
       id: "consultant",
       header: "Consulter",
@@ -750,45 +748,38 @@ const QuestionnaireTable = ({
       id: "date",
       header: "Date",
       sortable: true,
-      cell: (row) => (
-        <div>
-          <div className="text-sm">Updated: {row.date.updated}</div>
-          <div className="text-xs text-secondary-500">
-            Created: {row.date.created}
+      cell: (row) => {
+        const dates = {
+          updated: `Updated ${row.date.updated}`,
+          created: `Created at: ${row.date.created}`,
+        };
+        return (
+          <div className="space-y-1">
+            <div className="text-sm text-gray-900">{dates.updated}</div>
+            <div className="text-xs text-gray-500">{dates.created}</div>
           </div>
-        </div>
-      ),
+        );
+      },
     },
     {
       id: "actions",
       header: "Actions",
       sortable: false,
       cell: (row) => (
-        <div className="flex items-center space-x-2">
-          <Button variant="view" size="sm" asChild>
-            <a href={`/questionnaires/${row.id}/view`}>
-              <svg
-                className="w-3 h-3"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                />
-              </svg>
-              View
-            </a>
+        <div className="relative group flex flex-col items-center">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() =>
+              (window.location.href = `/questionnaires/${row.id}/view`)
+            }
+            className="bg-white hover:bg-gray-50 text-gray-500 hover:text-gray-900"
+          >
+            <Eye className="h-4 w-4" />
           </Button>
+          <span className="absolute -top-8 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 transition bg-gray-900 text-white text-xs rounded px-2 py-1 whitespace-nowrap z-10">
+            View Questionnaire
+          </span>
         </div>
       ),
     },

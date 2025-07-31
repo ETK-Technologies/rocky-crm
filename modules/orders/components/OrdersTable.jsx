@@ -11,6 +11,8 @@ import {
   Activity,
   Info,
   HelpCircle,
+  MoreHorizontal,
+  Pencil,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -218,36 +220,53 @@ const columns = [
     ),
   },
   {
-    id: "prescription",
-    header: "Prescription",
+    id: "actions",
+    header: "Actions",
+    className: "text-right",
     cell: (row) => (
-      <div className="relative group flex flex-col items-center">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() =>
-            (window.location.href = `/prescriptions/view/${row.id}`)
-          }
-        >
-          <svg
-            className="h-6 w-6 text-gray-900 hover:text-indigo-900"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            aria-hidden="true"
+      <div className="flex justify-center gap-2">
+        <div className="relative group flex flex-col items-center">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => (window.location.href = `/orders/${row.id}`)}
+            className="bg-white hover:bg-gray-50 text-gray-500 hover:text-gray-900"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M9 14.25l6-6m4.5-3.493V21.75l-3.75-1.5-3.75 1.5-3.75-1.5-3.75 1.5V4.757c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0c1.1.128 1.907 1.077 1.907 2.185zM9.75 9h.008v.008H9.75V9zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm4.125 4.5h.008v.008h-.008V13.5zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
-            />
-          </svg>
-        </Button>
-        <span className="absolute -top-8 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 transition bg-gray-900 text-white text-xs rounded px-2 py-1 whitespace-nowrap z-10">
-          View Prescription
-        </span>
+            <Eye className="h-4 w-4" />
+          </Button>
+          <span className="absolute -top-8 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 transition bg-gray-900 text-white text-xs rounded px-2 py-1 whitespace-nowrap z-10">
+            View Order
+          </span>
+        </div>
+        <div className="relative group flex flex-col items-center">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() =>
+              (window.location.href = `/prescriptions/view/${row.id}`)
+            }
+            className="bg-white hover:bg-gray-50 text-gray-500 hover:text-gray-900"
+          >
+            <svg
+              className="h-4 w-4 text-gray-500 hover:text-gray-900"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 14.25l6-6m4.5-3.493V21.75l-3.75-1.5-3.75 1.5-3.75-1.5-3.75 1.5V4.757c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0c1.1.128 1.907 1.077 1.907 2.185zM9.75 9h.008v.008H9.75V9zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm4.125 4.5h.008v.008h-.008V13.5zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
+              />
+            </svg>
+          </Button>
+          <span className="absolute -top-8 left-1/2 -translate-x-1/2 scale-0 group-hover:scale-100 transition bg-gray-900 text-white text-xs rounded px-2 py-1 whitespace-nowrap z-10">
+            View Prescription
+          </span>
+        </div>
       </div>
     ),
   },

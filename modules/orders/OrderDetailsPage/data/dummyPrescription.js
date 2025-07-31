@@ -1,0 +1,18 @@
+export const dummyPrescription = {
+    patientName: "Pamela Bridgen",
+    patientAddress: "5270 Solar Dr",
+    patientUnit: "Unit 15",
+    patientPhone: "+1 (833) 697-6259",
+    patientId: "06277824",
+    doctorName: "Laurent Rioux-Boivin",
+    patientAge: 28,
+    doctorAddress: "2237 RUE PRIEUR E, MONTREAL, QC",
+    date: "2025-03-06",
+    medication: "Sildenafil",
+    dosage: "50mg",
+    quantity: "4-tabs",
+    duration: "1 Month",
+    refills: "11 Refills",
+    instructions: "Take 1 to 2 tabs prn. Max dose 2 tabs in 24hrs",
+    signature: "✍️",
+};

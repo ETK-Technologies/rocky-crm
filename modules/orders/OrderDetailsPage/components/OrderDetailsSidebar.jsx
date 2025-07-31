@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import ExpandableSection from "./ExpandableSection";
+import PrescriptionCard from "./PrescriptionCard";
+import { dummyPrescription } from './../data/dummyPrescription';
+import OrderNotesCard from "./OrderNotesCard";
 
 const sections = [
     { key: "prescription", label: "Prescription" },
@@ -20,7 +23,7 @@ function OrderDetailsSidebar({ order }) {
     };
 
     return (
-        <div className="flex flex-col gap-4 lg:w-1/3 min-w-[260px]">
+        <div className="flex flex-col gap-4 w-full min-w-[260px]">
             {sections.map(section => (
                 <ExpandableSection
                     key={section.key}
@@ -29,13 +32,14 @@ function OrderDetailsSidebar({ order }) {
                     onToggle={() => toggleSection(section.key)}
                 >
                     {section.key === "prescription" && (
-                        <div>
-                            {order.prescription?.map((pres, idx) => (
-                                <div key={idx} className="mb-1">{pres}</div>
-                            ))}
-                        </div>
+                        <PrescriptionCard data={dummyPrescription} />
                     )}
-                    <div className="text-gray-500 text-sm">No data available.</div>
+                    {section.key === "orderNotes" && (
+                        <OrderNotesCard />
+                    )}
+                    {(section.key !== "prescription" && section.key !== "orderNotes") && (
+                        <div className="text-gray-500 text-sm">No data available.</div>
+                    )}
                 </ExpandableSection>
             ))}
         </div>

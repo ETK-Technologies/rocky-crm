@@ -11,17 +11,16 @@ function OrderDetailsCard({ order }) {
     const [editUserOpen, setEditUserOpen] = useState(false);
     const [editBillingOpen, setEditBillingOpen] = useState(false);
     const [editShippingOpen, setEditShippingOpen] = useState(false);
-
     const [counselled, setCounselled] = useState("");
     const [doctor, setDoctor] = useState(doctorOptions[0]);
     const [status, setStatus] = useState(order.status || statusOptions[0]);
     const [pharmacist, setPharmacist] = useState(pharmacistOptions[0]);
 
     return (
-        <div className="bg-white rounded-xl shadow-md border border-gray-100 p-8 flex-1 w-full min-w-[340px]">
+        <div className="bg-white rounded-xl shadow-md border border-gray-100 p-8 flex-1 w-full min-w-[340px] h-fit">
             <div className="flex flex-wrap gap-4 items-center mb-6">
                 <span className="text-2xl font-bold">Order #{order.id}</span>
-                <span className="px-2 py-1 rounded bg-blue-100 text-blue-700 text-sm font-semibold">{order.orderType}</span>
+                {/* <span className="px-2 py-1 rounded bg-blue-100 text-blue-700 text-sm font-semibold">{order.orderType}</span> */}
                 <span className={`px-3 py-1 rounded text-sm font-semibold ${order.status === "Pending payment" ? "bg-blue-100 text-blue-800"
                     : order.status === "Medical Review" ? "bg-orange-100 text-orange-800"
                         : order.status === "Processing" ? "bg-gray-100 text-gray-800"
@@ -41,9 +40,7 @@ function OrderDetailsCard({ order }) {
                         </button>
                     </div>
                     <div>{order.name}</div>
-                    <div className="mt-2 text-gray-500">{order.email || "—"}</div>
-                    <div className="mt-2 text-gray-500">{order.phone || "—"}</div>
-                    <div className="mt-4 font-semibold">Shipping pending</div>
+
                 </div>
                 <div>
                     <div className="font-semibold mb-1 flex items-center gap-2">

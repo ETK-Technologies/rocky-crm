@@ -14,7 +14,7 @@ import { useState } from "react";
 
 export default function PrespectionCreate() {
   const router = useRouter();
-  
+
   const [formData, setFormData] = useState({
     prescribedBy: "",
     dateOfCreation: "",
@@ -76,9 +76,13 @@ export default function PrespectionCreate() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     // Validate form data
-    if (!formData.prescribedBy || !formData.selectedUser || !formData.dateOfCreation) {
+    if (
+      !formData.prescribedBy ||
+      !formData.selectedUser ||
+      !formData.dateOfCreation
+    ) {
       alert("Please fill in all required fields");
       return;
     }
@@ -89,16 +93,18 @@ export default function PrespectionCreate() {
     );
 
     if (!hasValidMedication) {
-      alert("Please add at least one medication with name, strength, and quantity");
+      alert(
+        "Please add at least one medication with name, strength, and quantity"
+      );
       return;
     }
 
     // Submit the form data
     console.log("Submitting prescription:", formData);
-    
+
     // Here you would typically make an API call
     // Example: await createPrescription(formData);
-    
+
     // Navigate back to prescriptions list
     router.push("/prescriptions");
   };
@@ -143,10 +149,12 @@ export default function PrespectionCreate() {
                 <label className="text-sm font-medium mb-2 text-secondary-700">
                   Prescripton By *
                 </label>
-                <Select 
+                <Select
                   options={[{ value: "1", label: "Dr John" }]}
                   value={formData.prescribedBy}
-                  onChange={(e) => handleInputChange("prescribedBy", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("prescribedBy", e.target.value)
+                  }
                 />
               </div>
 
@@ -154,11 +162,13 @@ export default function PrespectionCreate() {
                 <label className="text-sm font-medium mb-2 text-secondary-700">
                   Date of Creation *
                 </label>
-                <Input 
-                  type="date" 
+                <Input
+                  type="date"
                   className="w-full"
                   value={formData.dateOfCreation}
-                  onChange={(e) => handleInputChange("dateOfCreation", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("dateOfCreation", e.target.value)
+                  }
                   required
                 />
               </div>
@@ -167,10 +177,12 @@ export default function PrespectionCreate() {
                 <label className="text-sm font-medium mb-2 text-secondary-700">
                   Select User *
                 </label>
-                <Select 
+                <Select
                   options={[{ value: "1", label: "User One" }]}
                   value={formData.selectedUser}
-                  onChange={(e) => handleInputChange("selectedUser", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("selectedUser", e.target.value)
+                  }
                 />
               </div>
 
@@ -181,128 +193,172 @@ export default function PrespectionCreate() {
                 <Select
                   options={[{ value: "1", label: "Prescription By" }]}
                   value={formData.prescriptionBy}
-                  onChange={(e) => handleInputChange("prescriptionBy", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("prescriptionBy", e.target.value)
+                  }
                 />
               </div>
             </Card>
-            
-            <Card className="flex-1 px-4">
-              <h3 className="text-lg font-semibold mb-4">Medications</h3>
-              {formData.medications.map((medication, index) => (
-                <div key={index} className="border-b pb-4 mb-4 last:border-b-0">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-sm font-medium text-secondary-700">
-                      Medication {index + 1}
-                    </span>
-                    {formData.medications.length > 1 && (
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={() => removeMedication(index)}
-                        className="text-red-600"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    )}
-                  </div>
-                  
-                  <div className="space-y-2 mb-2">
-                    <label className="text-sm font-medium mb-2 text-secondary-700">
-                      Medication *
-                    </label>
-                    <div className="flex gap-2">
-                      <Input 
-                        className="flex-1"
-                        value={medication.medication}
-                        onChange={(e) => handleMedicationChange(index, "medication", e.target.value)}
-                        placeholder="Enter medication name"
-                        required
-                      />
-                      <Button type="button" size="sm">
-                        Search
-                      </Button>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2 mb-2">
-                    <label className="text-sm font-medium mb-2 text-secondary-700">
-                      Medication Strength *
-                    </label>
-                    <Input 
-                      className="w-full"
-                      value={medication.strength}
-                      onChange={(e) => handleMedicationChange(index, "strength", e.target.value)}
-                      placeholder="e.g., 10mg"
-                      required
-                    />
-                  </div>
-                  
-                  <div className="space-y-2 mb-2">
-                    <label className="text-sm font-medium mb-2 text-secondary-700">
-                      Quantity *
-                    </label>
-                    <Input 
-                      type="number" 
-                      className="w-full"
-                      value={medication.quantity}
-                      onChange={(e) => handleMedicationChange(index, "quantity", e.target.value)}
-                      placeholder="Enter quantity"
-                      required
-                    />
-                  </div>
 
-                  <div className="space-y-2 mb-2">
-                    <label className="text-sm font-medium mb-2 text-secondary-700">
-                      Duration
-                    </label>
-                    <Input 
-                      className="w-full"
-                      value={medication.duration}
-                      onChange={(e) => handleMedicationChange(index, "duration", e.target.value)}
-                      placeholder="e.g., 7 days"
-                    />
-                  </div>
-
-                  <div className="space-y-2 mb-2">
-                    <label className="text-sm font-medium mb-2 text-secondary-700">
-                      Refills
-                    </label>
-                    <Input 
-                      type="number"
-                      className="w-full"
-                      value={medication.refills}
-                      onChange={(e) => handleMedicationChange(index, "refills", e.target.value)}
-                      placeholder="Number of refills"
-                    />
-                  </div>
-
-                  <div className="space-y-2 mb-2">
-                    <label className="text-sm font-medium mb-2 text-secondary-700">
-                      Instructions
-                    </label>
-                    <Input 
-                      className="w-full"
-                      value={medication.instructions}
-                      onChange={(e) => handleMedicationChange(index, "instructions", e.target.value)}
-                      placeholder="e.g., Take with food"
-                    />
-                  </div>
-                </div>
-              ))}
-
-              <Button type="button" className="w-full" onClick={addMoreMedication}>
-                Add More Medication
-              </Button>
-            </Card>
-            
             <Card className="flex-1 px-4">
               <p className="space-y-2 mb-2">No Templates Found</p>
             </Card>
           </div>
 
+          <Card className="flex-1 px-4">
+            <h3 className="text-lg font-semibold mb-4">Medications</h3>
+            <div className="overflow-x-auto">
+              <table className="min-w-full border text-sm">
+                <thead>
+                  <tr className="bg-gray-100">
+                    <th className="px-2 py-2 border">#</th>
+                    <th className="px-2 py-2 border">Medication *</th>
+                    <th className="px-2 py-2 border">Strength *</th>
+                    <th className="px-2 py-2 border">Quantity *</th>
+                    <th className="px-2 py-2 border">Duration</th>
+                    <th className="px-2 py-2 border">Refills</th>
+                    <th className="px-2 py-2 border">Instructions</th>
+                    <th className="px-2 py-2 border">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {formData.medications.map((medication, index) => (
+                    <tr key={index} className="border-b last:border-b-0">
+                      <td className="px-2 py-2 border text-center font-medium">
+                        {index + 1}
+                      </td>
+                      <td className="px-2 py-2 border">
+                        <div className="flex gap-2">
+                          <Input
+                            className="flex-1"
+                            value={medication.medication}
+                            onChange={(e) =>
+                              handleMedicationChange(
+                                index,
+                                "medication",
+                                e.target.value
+                              )
+                            }
+                            placeholder="Enter medication name"
+                            required
+                          />
+                          <Button type="button" size="icon" className="p-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                              <circle cx="11" cy="11" r="7" />
+                              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                            </svg>
+                          </Button>
+                        </div>
+                      </td>
+                      <td className="px-2 py-2 border">
+                        <Input
+                          className="w-full"
+                          value={medication.strength}
+                          onChange={(e) =>
+                            handleMedicationChange(
+                              index,
+                              "strength",
+                              e.target.value
+                            )
+                          }
+                          placeholder="e.g., 10mg"
+                          required
+                        />
+                      </td>
+                      <td className="px-2 py-2 border">
+                        <Input
+                          type="number"
+                          className="w-full"
+                          value={medication.quantity}
+                          onChange={(e) =>
+                            handleMedicationChange(
+                              index,
+                              "quantity",
+                              e.target.value
+                            )
+                          }
+                          placeholder="Enter quantity"
+                          required
+                        />
+                      </td>
+                      <td className="px-2 py-2 border">
+                        <Input
+                          className="w-full"
+                          value={medication.duration}
+                          onChange={(e) =>
+                            handleMedicationChange(
+                              index,
+                              "duration",
+                              e.target.value
+                            )
+                          }
+                          placeholder="e.g., 7 days"
+                        />
+                      </td>
+                      <td className="px-2 py-2 border">
+                        <Input
+                          type="number"
+                          className="w-full"
+                          value={medication.refills}
+                          onChange={(e) =>
+                            handleMedicationChange(
+                              index,
+                              "refills",
+                              e.target.value
+                            )
+                          }
+                          placeholder="Number of refills"
+                        />
+                      </td>
+                      <td className="px-2 py-2 border">
+                        <Input
+                          className="w-full"
+                          value={medication.instructions}
+                          onChange={(e) =>
+                            handleMedicationChange(
+                              index,
+                              "instructions",
+                              e.target.value
+                            )
+                          }
+                          placeholder="e.g., Take with food"
+                        />
+                      </td>
+                      <td className="px-2 py-2 border text-center">
+                        {formData.medications.length > 1 && (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => removeMedication(index)}
+                            className="text-red-600"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div>
+              <Button
+                type="button"
+                className="mt-2 w-1/5 float-end"
+                onClick={addMoreMedication}
+              >
+                Add More Medication
+              </Button>
+            </div>
+          </Card>
+
           <div className="flex justify-end items-center gap-4">
-            <Button type="button" variant="secondary" onClick={handleSaveAsTemplate}>
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={handleSaveAsTemplate}
+            >
               Save as Template
             </Button>
 

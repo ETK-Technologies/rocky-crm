@@ -13,6 +13,7 @@ export * from "./Select";
 export { default as DocumentViewer } from "./DocumentViewer";
 export { default as SendFaxModal } from "./SendFaxModal";
 export { default as PharmacyFaxModal } from "./PharmacyFaxModal";
+export { default as PageHeader } from "./PageHeader";
 
 // Export Custom Components
 export { UserAvatar } from "../UserAvatar";

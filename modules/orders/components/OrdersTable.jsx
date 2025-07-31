@@ -1,116 +1,133 @@
-import React, { useState } from "react";
+import React from "react";
+import { DataTable } from "@/components/ui/DataTable";
+import { Button } from "@/components/ui";
+import { Eye, Trash2 } from "lucide-react";
 import Link from "next/link";
-import {
-    Table,
-    TableHeader,
-    TableBody,
-    TableHead,
-    TableRow,
-    TableCell,
-} from "@/components/ui/Table";
-import OrderDetailsModal from "./OrderDetailsModal";
+const columns = [
+    {
+        id: "id",
+        header: "Order",
+        sortable: true,
+        cell: (row) => (
+            <Link
+                href={`/orders/${row.id}`}
+                className="font-semibold text-blue-600 hover:underline"
+            >
+                #{row.id} {row.name}
+            </Link>
+        ),
+    },
+    {
+        id: "category",
+        header: "Category",
+        sortable: true,
+        cell: (row) => (
+            <span className="inline-block bg-gray-100 text-gray-700 px-2 py-0.5 rounded text-xs">
+                {row.category}
+            </span>
+        ),
+    },
+    {
+        id: "date",
+        header: "Date",
+        sortable: true,
+        cell: (row) => new Date(row.date).toLocaleString(),
+    },
+    {
+        id: "status",
+        header: "Status",
+        sortable: true,
+        cell: (row) => (
+            <span
+                className={`px-2 py-0.5 rounded text-[11px] font-medium whitespace-nowrap ${row.status === "Pending payment"
+                    ? "bg-blue-100 text-blue-800"
+                    : row.status === "Medical Review"
+                        ? "bg-orange-100 text-orange-800"
+                        : row.status === "Shipped"
+                            ? "bg-green-100 text-green-800"
+                            : "bg-gray-100 text-gray-800"
+                    }`}
+            >
+                {row.status}
+            </span>
+        ),
+    },
+    {
+        id: "province",
+        header: "Shipping",
+        sortable: true,
+    },
+    {
+        id: "orderType",
+        header: "Order Type",
+        sortable: true,
+    },
+    {
+        id: "total",
+        header: "Order Total",
+        sortable: true,
+        cell: (row) => (
+            <span className="font-semibold">${row.total}</span>
+        ),
+    },
+    {
+        id: "payment",
+        header: "Payment",
+        sortable: true,
+        cell: (row) => (
+            <span className="text-xs text-gray-500">Paid Via {row.payment}</span>
+        ),
+    },
+    {
+        id: "items",
+        header: "Order Items",
+        cell: (row) => row.items.map((item, idx) => <div key={idx}>{item}</div>),
+    },
+    {
+        id: "prescription",
+        header: "Prescription",
+        cell: (row) => row.prescription.map((pres, idx) => <div key={idx}>{pres}</div>),
+    },
+    {
+        id: "actions",
+        header: "Actions",
+        className: "text-right",
+        cell: (row) => (
+            <div className="flex justify-end gap-2">
+                <Button variant="ghost" size="sm">
+                    <Eye className="h-4 w-4" />
+                </Button>
+                <Button variant="ghost" size="sm" className="text-red-500">
+                    <Trash2 className="h-4 w-4" />
+                </Button>
+            </div>
+        ),
+    },
+];
+function OrdersTable({
+    orders,
+    sortColumn,
+    sortDirection,
+    onSort,
+    selectable,
+    selectedRows,
+    onSelectedRowsChange,
+    pageSize,
+}) {
 
-function OrdersTable({ orders }) {
-    const [selectedOrder, setSelectedOrder] = useState(null);
 
     return (
-        <>
-            <div className="bg-white rounded-xl shadow-md p-2">
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead>Order</TableHead>
-                            <TableHead>Tags/Categories</TableHead>
-                            <TableHead>Date</TableHead>
-                            <TableHead>Status</TableHead>
-                            <TableHead>Shipping</TableHead>
-                            <TableHead>Order Type</TableHead>
-                            <TableHead>Order Total</TableHead>
-                            <TableHead>Order Items</TableHead>
-                            <TableHead>Prescription</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {orders.length === 0 ? (
-                            <TableRow>
-                                <TableCell colSpan={9} className="text-center py-8">
-                                    No orders found.
-                                </TableCell>
-                            </TableRow>
-                        ) : (
-                            orders.map((order) => (
-                                <TableRow
-                                    key={order.id}
-                                    className="hover:bg-gray-50 transition"
-                                >
-                                    <TableCell>
-                                        <Link
-                                            href={`/orders/${order.id}`}
-                                            className="font-semibold text-blue-600 hover:underline"
-                                        >
-                                            #{order.id} {order.name}
-                                        </Link>
-                                    </TableCell>
-                                    <TableCell className="flex items-center">
-                                        <span className="inline-block bg-gray-100 text-gray-700 px-2 py-0.5 rounded mr-1 text-xs">
-                                            {order.category}
-                                        </span>
-                                        <button
-                                            className="ml-2 text-blue-500 hover:text-blue-700 cursor-pointer"
-                                            title="View details"
-                                            onClick={() => setSelectedOrder(order)}
-                                        >
-                                            ℹ️
-                                        </button>
-                                    </TableCell>
-                                    <TableCell>{new Date(order.date).toLocaleString()}</TableCell>
-                                    <TableCell>
-                                        <span
-                                            className={`px-2 py-0.5 rounded text-[11px] font-medium whitespace-nowrap ${order.status === "Pending payment"
-                                                ? "bg-blue-100 text-blue-800"
-                                                : order.status === "Medical Review"
-                                                    ? "bg-orange-100 text-orange-800"
-                                                    : order.status === "Shipped"
-                                                        ? "bg-green-100 text-green-800"
-                                                        : "bg-gray-100 text-gray-800"
-                                                }`}
-                                        >
-                                            {order.status}
-                                        </span>
-                                    </TableCell>
-                                    <TableCell>{order.province}</TableCell>
-                                    <TableCell>
-                                        {order.orderType}
-                                    </TableCell>
-                                    <TableCell>
-                                        <span className="font-semibold">${order.total}</span>
-                                        <span className="text-xs text-gray-500 ml-1">
-                                            Paid Via {order.payment}
-                                        </span>
-                                    </TableCell>
-                                    <TableCell>
-                                        {order.items.map((item, idx) => (
-                                            <div key={idx}>{item}</div>
-                                        ))}
-                                    </TableCell>
-                                    <TableCell>
-                                        {order.prescription.map((pres, idx) => (
-                                            <div key={idx}>{pres}</div>
-                                        ))}
-                                    </TableCell>
-                                </TableRow>
-                            ))
-                        )}
-                    </TableBody>
-                </Table>
-            </div>
-            {selectedOrder && (
-                <OrderDetailsModal
-                    order={selectedOrder}
-                    onClose={() => setSelectedOrder(null)}
-                />
-            )}
-        </>
+        <DataTable
+            columns={columns}
+            data={orders}
+            sortColumn={sortColumn}
+            sortDirection={sortDirection}
+            onSort={onSort}
+            selectable={selectable}
+            selectedRows={selectedRows}
+            onSelectedRowsChange={onSelectedRowsChange}
+            pageSize={pageSize}
+        />
     );
 }
 

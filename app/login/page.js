@@ -202,6 +202,7 @@ export default function Login() {
 
                 <button
                   type="button"
+                  onClick={() => router.push("/forgot-password")}
                   className="text-sm text-primary-600 hover:text-primary-700 transition-colors"
                   disabled={isSubmitting}
                 >
@@ -218,14 +219,23 @@ export default function Login() {
               {isSubmitting ? "Signing in..." : "Sign In"}
             </button>
 
-            {process.env.NODE_ENV === "development" && (
+            {(process.env.NODE_ENV === "development" ||
+              process.env.NEXT_PUBLIC_DEMO_MODE === "true") && (
               <div className="mt-6 p-4 bg-secondary-50 rounded-lg">
                 <p className="text-sm text-secondary-700 font-medium">
-                  Development Mode
+                  Demo Mode
                 </p>
                 <p className="text-sm text-secondary-600 mt-1">
-                  Any credentials will work in development mode.
+                  Any credentials will work in demo mode.
                 </p>
+                <div className="mt-2 text-xs text-secondary-500">
+                  Try:{" "}
+                  <span className="font-mono bg-white px-1 rounded">demo</span>{" "}
+                  /{" "}
+                  <span className="font-mono bg-white px-1 rounded">
+                    demo123
+                  </span>
+                </div>
               </div>
             )}
           </form>

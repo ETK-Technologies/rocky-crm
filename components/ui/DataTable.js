@@ -17,7 +17,6 @@ import {
   TableHead,
   TableRow,
   TableCell,
-  Checkbox,
   Button,
 } from "./index";
 import { cn } from "@/lib/utils";
@@ -31,10 +30,10 @@ const DataTable = React.forwardRef(
       sortColumn,
       sortDirection,
       className,
-      selectable = false,
+      pageSize = 10,
+      selectable,
       selectedRows = [],
       onSelectedRowsChange,
-      pageSize = 10,
       ...props
     },
     ref
@@ -48,6 +47,23 @@ const DataTable = React.forwardRef(
       }
     };
 
+    const handleSelectAll = (e) => {
+      if (onSelectedRowsChange) {
+        onSelectedRowsChange(
+          e.target.checked ? paginatedData.map((row) => row.id) : []
+        );
+      }
+    };
+
+    const handleSelectRow = (rowId) => {
+      if (onSelectedRowsChange) {
+        const newSelectedRows = selectedRows.includes(rowId)
+          ? selectedRows.filter((id) => id !== rowId)
+          : [...selectedRows, rowId];
+        onSelectedRowsChange(newSelectedRows);
+      }
+    };
+
     const getSortIcon = (columnId) => {
       if (sortColumn !== columnId)
         return <ChevronsUpDown className="w-4 h-4 ml-1" />;
@@ -56,21 +72,6 @@ const DataTable = React.forwardRef(
       ) : (
         <ChevronDown className="w-4 h-4 ml-1" />
       );
-    };
-
-    const handleSelectAll = (checked) => {
-      if (onSelectedRowsChange) {
-        onSelectedRowsChange(checked ? paginatedData.map((row) => row.id) : []);
-      }
-    };
-
-    const handleSelectRow = (checked, rowId) => {
-      if (onSelectedRowsChange) {
-        const newSelected = checked
-          ? [...selectedRows, rowId]
-          : selectedRows.filter((id) => id !== rowId);
-        onSelectedRowsChange(newSelected);
-      }
     };
 
     // Pagination logic
@@ -82,30 +83,12 @@ const DataTable = React.forwardRef(
       setCurrentPage(page);
     };
 
-    const isAllSelected =
-      paginatedData.length > 0 &&
-      paginatedData.every((row) => selectedRows.includes(row.id));
-    const isIndeterminate =
-      selectedRows.length > 0 &&
-      paginatedData.some((row) => selectedRows.includes(row.id)) &&
-      !isAllSelected;
-
     return (
       <div className="space-y-4">
         <div className="relative w-full overflow-auto rounded-lg border border-secondary-200 bg-white shadow-sm">
           <Table ref={ref} className={className} {...props}>
             <TableHeader>
               <TableRow>
-                {selectable && (
-                  <TableHead className="w-[50px] pr-0">
-                    <Checkbox
-                      checked={isAllSelected}
-                      onCheckedChange={handleSelectAll}
-                      aria-label="Select all"
-                      {...(isIndeterminate ? { indeterminate: true } : {})}
-                    />
-                  </TableHead>
-                )}
                 {columns.map((column) => (
                   <TableHead
                     key={column.id}
@@ -117,8 +100,23 @@ const DataTable = React.forwardRef(
                     )}
                   >
                     <div className="flex items-center">
-                      {column.header}
-                      {column.sortable && getSortIcon(column.id)}
+                      {column.id === "select" && selectable ? (
+                        <input
+                          type="checkbox"
+                          className="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                          checked={
+                            selectedRows.length === paginatedData.length &&
+                            paginatedData.length > 0
+                          }
+                          onChange={handleSelectAll}
+                          onClick={(e) => e.stopPropagation()}
+                        />
+                      ) : (
+                        <>
+                          {column.header}
+                          {column.sortable && getSortIcon(column.id)}
+                        </>
+                      )}
                     </div>
                   </TableHead>
                 ))}
@@ -128,24 +126,25 @@ const DataTable = React.forwardRef(
               {paginatedData.map((row, rowIndex) => (
                 <TableRow
                   key={rowIndex}
-                  className={cn(
-                    selectedRows.includes(row.id) && "bg-primary-50/50"
-                  )}
+                  className={
+                    selectedRows.includes(row.id) ? "bg-primary-50" : ""
+                  }
                 >
-                  {selectable && (
-                    <TableCell className="pr-0">
-                      <Checkbox
-                        checked={selectedRows.includes(row.id)}
-                        onCheckedChange={(checked) =>
-                          handleSelectRow(checked, row.id)
-                        }
-                        aria-label={`Select row ${rowIndex + 1}`}
-                      />
-                    </TableCell>
-                  )}
                   {columns.map((column) => (
                     <TableCell key={column.id} className={column.className}>
-                      {column.cell ? column.cell(row) : row[column.id]}
+                      {column.id === "select" && selectable ? (
+                        <input
+                          type="checkbox"
+                          className="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                          checked={selectedRows.includes(row.id)}
+                          onChange={() => handleSelectRow(row.id)}
+                          onClick={(e) => e.stopPropagation()}
+                        />
+                      ) : column.cell ? (
+                        column.cell(row)
+                      ) : (
+                        row[column.id]
+                      )}
                     </TableCell>
                   ))}
                 </TableRow>
@@ -153,7 +152,7 @@ const DataTable = React.forwardRef(
               {data.length === 0 && (
                 <TableRow>
                   <TableCell
-                    colSpan={selectable ? columns.length + 1 : columns.length}
+                    colSpan={columns.length}
                     className="h-32 text-center text-secondary-500"
                   >
                     No data available

@@ -3,8 +3,17 @@
 import { useState } from "react";
 import { Button, Input, Filters, DataTable, UserAvatar } from "@/components/ui";
 import { Pencil, Trash2, MoreHorizontal, Download, Mail } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui";
+import { useNotification } from "@/components/ui/Notification";
+import { X } from "lucide-react";
 
 export default function UsersPage() {
+  const router = useRouter();
+  const { showSuccess, NotificationContainer } = useNotification();
+  const [activeTab, setActiveTab] = useState("all");
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [userToDelete, setUserToDelete] = useState(null);
   const [filters, setFilters] = useState([
     {
       id: "created",
@@ -51,7 +60,7 @@ export default function UsersPage() {
   const [selectedRows, setSelectedRows] = useState([]);
 
   // Example data - replace with actual data fetching
-  const [users] = useState([
+  const [users, setUsers] = useState([
     {
       id: 1,
       name: "John Doe",
@@ -65,6 +74,7 @@ export default function UsersPage() {
     },
     // Add more example users...
   ]);
+  const [trashedUsers, setTrashedUsers] = useState([]);
 
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
@@ -102,6 +112,30 @@ export default function UsersPage() {
     }
   };
 
+  // Delete logic
+  const handleDeleteClick = (user) => {
+    setUserToDelete(user);
+    setShowDeleteDialog(true);
+  };
+  const handleDeleteConfirm = () => {
+    if (activeTab === "all") {
+      setUsers((prev) => prev.filter((u) => u.id !== userToDelete.id));
+      setTrashedUsers((prev) => [...prev, userToDelete]);
+      setActiveTab("trashed");
+      showSuccess("Deleted successfully", "User has been moved to trash.");
+    } else {
+      setTrashedUsers((prev) => prev.filter((u) => u.id !== userToDelete.id));
+      showSuccess("Deleted successfully", "User has been permanently deleted.");
+    }
+    setShowDeleteDialog(false);
+    setUserToDelete(null);
+  };
+  const handleDeleteCancel = () => {
+    setShowDeleteDialog(false);
+    setUserToDelete(null);
+  };
+
+  // Columns
   const columns = [
     {
       id: "name",
@@ -172,10 +206,21 @@ export default function UsersPage() {
       className: "text-right",
       cell: (row) => (
         <div className="flex justify-end gap-2">
-          <Button variant="ghost" size="sm">
-            <Pencil className="h-4 w-4" />
-          </Button>
-          <Button variant="ghost" size="sm" className="text-red-500">
+          {activeTab === "all" && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => router.push(`/users/${row.id}/edit`)}
+            >
+              <Pencil className="h-4 w-4" />
+            </Button>
+          )}
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-red-500"
+            onClick={() => handleDeleteClick(row)}
+          >
             <Trash2 className="h-4 w-4" />
           </Button>
           <Button variant="ghost" size="sm">
@@ -186,8 +231,8 @@ export default function UsersPage() {
     },
   ];
 
-  // Sort and filter data
-  const filteredData = users
+  // Filtered data
+  const filteredData = (activeTab === "all" ? users : trashedUsers)
     .filter((user) => {
       if (!searchQuery) return true;
       const searchLower = searchQuery.toLowerCase();
@@ -201,7 +246,6 @@ export default function UsersPage() {
       const aValue = a[sortColumn];
       const bValue = b[sortColumn];
       const modifier = sortDirection === "asc" ? 1 : -1;
-
       if (typeof aValue === "string") {
         return aValue.localeCompare(bValue) * modifier;
       }
@@ -210,6 +254,7 @@ export default function UsersPage() {
 
   return (
     <div className="space-y-6">
+      <NotificationContainer />
       {/* Header */}
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-secondary-900">Users</h1>
@@ -243,8 +288,34 @@ export default function UsersPage() {
               </Button>
             </>
           )}
-          <Button>Add User</Button>
+          <Button onClick={() => router.push("/users/add")}>Add User</Button>
         </div>
+      </div>
+
+      {/* Tabs */}
+      <div className="border-b border-secondary-200 mb-2">
+        <nav className="flex space-x-8">
+          <button
+            onClick={() => setActiveTab("all")}
+            className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
+              activeTab === "all"
+                ? "border-primary text-primary"
+                : "border-transparent text-secondary-500 hover:text-secondary-700"
+            }`}
+          >
+            All
+          </button>
+          <button
+            onClick={() => setActiveTab("trashed")}
+            className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
+              activeTab === "trashed"
+                ? "border-primary text-primary"
+                : "border-transparent text-secondary-500 hover:text-secondary-700"
+            }`}
+          >
+            Trashed
+          </button>
+        </nav>
       </div>
 
       {/* Filters with inline search */}
@@ -267,6 +338,41 @@ export default function UsersPage() {
         selectedRows={selectedRows}
         onSelectedRowsChange={setSelectedRows}
       />
+
+      {/* Delete Dialog */}
+      {showDeleteDialog && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
+            <div className="flex items-center justify-between p-6 border-b border-secondary-200">
+              <h2 className="text-lg font-semibold text-secondary-900">Delete User Account</h2>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleDeleteCancel}
+                className="text-secondary-600 hover:text-secondary-800"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+            <div className="p-6 space-y-4">
+              <div className="text-center text-lg font-medium text-secondary-900">
+                Are you sure your want to delete this user account?
+              </div>
+              <div className="text-center text-secondary-600">
+                Once this account is deleted, all of its resources and data will be moved to trash.
+              </div>
+            </div>
+            <div className="flex justify-end gap-2 px-6 pb-6">
+              <Button variant="destructive" onClick={handleDeleteConfirm}>
+                Delete Account
+              </Button>
+              <Button variant="outline" onClick={handleDeleteCancel}>
+                Decline
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

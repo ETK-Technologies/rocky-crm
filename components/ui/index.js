@@ -9,6 +9,7 @@ export * from "./Table";
 export * from "./DataTable";
 export * from "./Filters";
 export * from "./Checkbox";
+export * from "./Select";
 export { default as DocumentViewer } from "./DocumentViewer";
 export { default as SendFaxModal } from "./SendFaxModal";
 export { default as PharmacyFaxModal } from "./PharmacyFaxModal";

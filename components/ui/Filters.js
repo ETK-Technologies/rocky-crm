@@ -25,7 +25,7 @@ export function DateRangePicker({
             variant="outline"
             size="sm"
             className={cn(
-              "w-[130px] justify-start text-left font-normal",
+              "h-8 w-[130px] justify-start text-left font-normal",
               !startDate && "text-muted-foreground"
             )}
           >
@@ -49,7 +49,7 @@ export function DateRangePicker({
             variant="outline"
             size="sm"
             className={cn(
-              "w-[130px] justify-start text-left font-normal",
+              "h-8 w-[130px] justify-start text-left font-normal",
               !endDate && "text-muted-foreground"
             )}
           >
@@ -75,7 +75,7 @@ export function FilterSelect({ options, value, onChange, placeholder }) {
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="h-9 w-full rounded-md border border-secondary-200 bg-white px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-primary-200"
+      className="h-8 w-full rounded-md border border-secondary-200 bg-white px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-primary-200"
     >
       <option value="">{placeholder}</option>
       {options.map((option) => (
@@ -139,8 +139,8 @@ export function Filters({
   const selectFilters = localFilters.filter((f) => f.type === "select");
 
   return (
-    <div className={cn("bg-secondary-50/50 p-4 rounded-lg", className)}>
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+    <div className={cn("bg-secondary-50/50 p-3 rounded-lg", className)}>
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-3">
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
           className="flex items-center gap-2 text-sm font-medium text-secondary-700 hover:text-secondary-900"
@@ -153,7 +153,7 @@ export function Filters({
           )}
         </button>
 
-        <div className="flex flex-col md:flex-row items-stretch md:items-center gap-4 w-full md:w-auto">
+        <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3 w-full md:w-auto">
           <div className="relative flex-1 md:w-[320px]">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-secondary-500" />
             <Input
@@ -161,7 +161,7 @@ export function Filters({
               placeholder="Search by name, email, or phone..."
               value={searchQuery}
               onChange={(e) => onSearchChange?.(e.target.value)}
-              className="pl-9 w-full"
+              className="pl-9 w-full h-8"
             />
           </div>
 
@@ -170,7 +170,7 @@ export function Filters({
               variant="ghost"
               size="sm"
               onClick={handleReset}
-              className="text-secondary-500 hover:text-secondary-700 md:self-center"
+              className="text-secondary-500 hover:text-secondary-700 md:self-center h-8"
             >
               Clear all
             </Button>
@@ -179,12 +179,12 @@ export function Filters({
       </div>
 
       {!isCollapsed && (
-        <div className="flex flex-col md:flex-row flex-wrap items-stretch md:items-end gap-4">
+        <div className="flex flex-col md:flex-row flex-wrap items-stretch md:items-end gap-3">
           {/* Date Range Filters */}
           {dateFilters.map((filter) => (
             <div
               key={filter.id}
-              className="flex-1 min-w-0 md:min-w-[300px] space-y-1.5"
+              className="flex-1 min-w-0 md:min-w-[300px] space-y-1"
             >
               <label className="text-xs font-medium text-secondary-700">
                 {filter.label}
@@ -211,7 +211,7 @@ export function Filters({
 
           {/* Select Filters */}
           {selectFilters.map((filter) => (
-            <div key={filter.id} className="w-full md:w-[200px] space-y-1.5">
+            <div key={filter.id} className="w-full md:w-[200px] space-y-1">
               <label className="text-xs font-medium text-secondary-700">
                 {filter.label}
               </label>
@@ -230,14 +230,14 @@ export function Filters({
               variant="outline"
               size="sm"
               onClick={handleReset}
-              className="flex-1 md:flex-none"
+              className="flex-1 md:flex-none h-8"
             >
               Reset
             </Button>
             <Button
               size="sm"
               onClick={handleApply}
-              className="flex-1 md:flex-none"
+              className="flex-1 md:flex-none h-8"
             >
               Apply Filters
             </Button>

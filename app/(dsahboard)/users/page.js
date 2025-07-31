@@ -64,6 +64,7 @@ export default function UsersPage() {
   const [sortColumn, setSortColumn] = useState("name");
   const [sortDirection, setSortDirection] = useState("asc");
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedRows, setSelectedRows] = useState([]);
 
   // Example data - replace with actual data fetching
   const [users, setUsers] = useState([
@@ -144,8 +145,36 @@ export default function UsersPage() {
     setUserToDelete(user);
     setShowDeleteDialog(true);
   };
+  const handleBulkDelete = () => {
+    setUserToDelete({ ids: selectedRows, status: "bulk" });
+    setShowDeleteDialog(true);
+  };
+
+  const handleBulkEmail = () => {
+    console.log("Sending email to:", selectedRows);
+    // Implement email functionality
+  };
+
+  const handleBulkExport = () => {
+    console.log("Exporting users:", selectedRows);
+    // Implement export functionality
+  };
+
+  // Update delete handler for bulk operations
   const handleDeleteConfirm = () => {
-    if (userToDelete.status === "active") {
+    if (userToDelete.status === "bulk") {
+      setUsers((prev) => prev.filter((u) => !userToDelete.ids.includes(u.id)));
+      setTrashedUsers((prev) => [
+        ...prev,
+        ...users
+          .filter((u) => userToDelete.ids.includes(u.id))
+          .map((u) => ({ ...u, status: "trashed" })),
+      ]);
+      showSuccess(
+        "Deleted successfully",
+        "Selected users have been moved to trash."
+      );
+    } else if (userToDelete.status === "active") {
       setUsers((prev) => prev.filter((u) => u.id !== userToDelete.id));
       setTrashedUsers((prev) => [
         ...prev,
@@ -158,6 +187,7 @@ export default function UsersPage() {
     }
     setShowDeleteDialog(false);
     setUserToDelete(null);
+    setSelectedRows([]);
   };
   const handleDeleteCancel = () => {
     setShowDeleteDialog(false);
@@ -166,6 +196,11 @@ export default function UsersPage() {
 
   // Columns
   const columns = [
+    {
+      id: "select",
+      header: "",
+      width: 40,
+    },
     {
       id: "name",
       header: "Name",
@@ -307,7 +342,36 @@ export default function UsersPage() {
           title="Users"
           description="Manage patient accounts, user permissions and information"
           actions={
-            <Button onClick={() => router.push("/users/add")}>Add User</Button>
+            <div className="flex items-center gap-2">
+              {selectedRows.length > 0 && (
+                <>
+                  <Button variant="outline" size="sm" onClick={handleBulkEmail}>
+                    <Mail className="h-4 w-4 mr-2" />
+                    Email Selected
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleBulkExport}
+                  >
+                    <Download className="h-4 w-4 mr-2" />
+                    Export Selected
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-red-500"
+                    onClick={handleBulkDelete}
+                  >
+                    <Trash2 className="h-4 w-4 mr-2" />
+                    Delete Selected
+                  </Button>
+                </>
+              )}
+              <Button onClick={() => router.push("/users/add")}>
+                Add User
+              </Button>
+            </div>
           }
         />
       </div>
@@ -328,6 +392,9 @@ export default function UsersPage() {
         sortColumn={sortColumn}
         sortDirection={sortDirection}
         onSort={handleSort}
+        selectable={true}
+        selectedRows={selectedRows}
+        onSelectedRowsChange={setSelectedRows}
       />
 
       {/* Delete Dialog */}
@@ -336,7 +403,8 @@ export default function UsersPage() {
           <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
             <div className="flex items-center justify-between p-6 border-b border-secondary-200">
               <h2 className="text-lg font-semibold text-secondary-900">
-                Delete User Account
+                Delete User{" "}
+                {userToDelete.status === "bulk" ? "Accounts" : "Account"}
               </h2>
               <Button
                 variant="ghost"
@@ -349,19 +417,24 @@ export default function UsersPage() {
             </div>
             <div className="p-6 space-y-4">
               <div className="text-center text-lg font-medium text-secondary-900">
-                Are you sure your want to delete this user account?
+                Are you sure you want to delete{" "}
+                {userToDelete.status === "bulk"
+                  ? "these user accounts"
+                  : "this user account"}
+                ?
               </div>
               <div className="text-center text-secondary-600">
-                Once this account is deleted, all of its resources and data will
-                be moved to trash.
+                {userToDelete.status === "bulk"
+                  ? `${userToDelete.ids.length} accounts will be moved to trash.`
+                  : "Once this account is deleted, all of its resources and data will be moved to trash."}
               </div>
             </div>
             <div className="flex justify-end gap-2 px-6 pb-6">
               <Button variant="destructive" onClick={handleDeleteConfirm}>
-                Delete Account
+                Delete {userToDelete.status === "bulk" ? "Accounts" : "Account"}
               </Button>
               <Button variant="outline" onClick={handleDeleteCancel}>
-                Decline
+                Cancel
               </Button>
             </div>
           </div>

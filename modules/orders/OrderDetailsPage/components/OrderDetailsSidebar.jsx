@@ -3,6 +3,8 @@ import ExpandableSection from "./ExpandableSection";
 import PrescriptionCard from "./PrescriptionCard";
 import { dummyPrescription } from './../data/dummyPrescription';
 import OrderNotesCard from "./OrderNotesCard";
+import MedicalNotesCard from "./MedicalNotesCard";
+import ManageTagsCard from "./ManageTagsCard";
 
 const sections = [
     { key: "prescription", label: "Prescription" },
@@ -13,7 +15,7 @@ const sections = [
 ];
 
 function OrderDetailsSidebar({ order }) {
-    const [expanded, setExpanded] = useState(sections.map(s => s.key));
+    const [expanded, setExpanded] = useState([]);
     const toggleSection = (key) => {
         setExpanded(expanded =>
             expanded.includes(key)
@@ -23,7 +25,7 @@ function OrderDetailsSidebar({ order }) {
     };
 
     return (
-        <div className="flex flex-col gap-4 w-full min-w-[260px]">
+        <div className="flex flex-col gap-4 w-full lg:w-auto min-w-[260px] ">
             {sections.map(section => (
                 <ExpandableSection
                     key={section.key}
@@ -37,7 +39,13 @@ function OrderDetailsSidebar({ order }) {
                     {section.key === "orderNotes" && (
                         <OrderNotesCard />
                     )}
-                    {(section.key !== "prescription" && section.key !== "orderNotes") && (
+                    {section.key === "medicalNotes" && (
+                        <MedicalNotesCard />
+                    )}
+                    {section.key === "manageTags" && (
+                        <ManageTagsCard />
+                    )}
+                    {(section.key !== "prescription" && section.key !== "orderNotes" && section.key !== "medicalNotes" && section.key !== "manageTags") && (
                         <div className="text-gray-500 text-sm">No data available.</div>
                     )}
                 </ExpandableSection>

@@ -17,7 +17,7 @@ function OrderDetailsCard({ order }) {
     const [pharmacist, setPharmacist] = useState(pharmacistOptions[0]);
 
     return (
-        <div className="bg-white rounded-xl shadow-md border border-gray-100 p-8 flex-1 w-full min-w-[540px] max-h-[700px]">
+        <div className="bg-white rounded-xl shadow-md border border-gray-100 p-4 md:p-8 w-full">
             <div className="flex flex-wrap gap-4 items-center mb-6">
                 <span className="text-2xl font-bold">Order #{order.id}</span>
                 {/* <span className="px-2 py-1 rounded bg-blue-100 text-blue-700 text-sm font-semibold">{order.orderType}</span> */}

@@ -121,32 +121,8 @@ const QuestionnaireFilters = ({
 
   return (
     <div className="space-y-4">
-      {/* Category Filters */}
-      <div className="bg-white rounded-lg border border-secondary-200 p-4 shadow-sm">
-        <div className="mb-3">
-          <h3 className="text-sm font-semibold text-secondary-700 mb-3">
-            Quick Filters
-          </h3>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => handleCategoryChange(category)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                activeCategory === category
-                  ? "bg-primary-600 text-white shadow-md"
-                  : "bg-secondary-100 text-secondary-700 hover:bg-secondary-200 hover:text-secondary-900"
-              }`}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
-      </div>
-
       {/* Advanced Filters */}
-      <div className="bg-white rounded-lg border border-secondary-200 shadow-sm">
+      <div>
         <Filters
           filters={filters}
           onFilterChange={handleFilterChange}
@@ -156,6 +132,29 @@ const QuestionnaireFilters = ({
           searchQuery={searchQuery}
           onSearchChange={handleSearch}
         />
+      </div>
+
+      {/* Category Filters */}
+      <div className="mb-6">
+        <div className="flex items-center relative">
+          {categories.map((category, index) => (
+            <button
+              key={category}
+              onClick={() => handleCategoryChange(category)}
+              className={`font-medium transition-all duration-200 relative px-4 py-2 ${
+                activeCategory === category
+                  ? "text-secondary-900"
+                  : "text-secondary-500 hover:text-secondary-700"
+              }`}
+            >
+              {category}
+              {activeCategory === category && (
+                <div className="absolute -bottom-2 left-0 right-0 h-0.5 bg-primary-600 -mx-1 z-10"></div>
+              )}
+            </button>
+          ))}
+        </div>
+        <div className="h-px bg-secondary-300 mt-2"></div>
       </div>
     </div>
   );

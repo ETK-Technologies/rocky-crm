@@ -202,6 +202,7 @@ export default function Login() {
 
                 <button
                   type="button"
+                  onClick={() => router.push("/forgot-password")}
                   className="text-sm text-primary-600 hover:text-primary-700 transition-colors"
                   disabled={isSubmitting}
                 >

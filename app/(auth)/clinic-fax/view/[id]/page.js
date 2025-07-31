@@ -1,9 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { Button, UserAvatar, DocumentViewer, Card } from "@/components/ui";
+import {
+  Button,
+  UserAvatar,
+  DocumentViewer,
+  Card,
+  PageHeader,
+} from "@/components/ui";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Icons from "@/components/icons";
 
 export default function FaxDetailPage({ params }) {
   const router = useRouter();
@@ -29,19 +36,13 @@ export default function FaxDetailPage({ params }) {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col items-start gap-4">
-        <Button
-          variant="ghost"
-          size="sm"
-          className="text-secondary-600 cursor-pointer"
-          onClick={handleBack}
-        >
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Back
-        </Button>
-        <h1 className="text-xl md:text-2xl font-bold text-secondary-900">
-          FAX Detail
-        </h1>
+      <div className="mb-8">
+        <PageHeader
+          icon={Icons.Fax}
+          title="FAX Detail"
+          onBack={handleBack}
+          backLabel="Back to Clinic Fax"
+        />
       </div>
 
       {/* Main Content Card */}

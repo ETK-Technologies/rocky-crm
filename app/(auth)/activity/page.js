@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { Button, Input, Filters, DataTable, UserAvatar } from "@/components/ui";
+import { PageHeader } from "@/components/ui";
+import Icons from "@/components/icons";
 import { Pencil, Trash2, MoreHorizontal, Download, Mail } from "lucide-react";
 
 export default function ActivityPage() {
@@ -352,8 +354,12 @@ export default function ActivityPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-secondary-900">Activity Logs</h1>
+      <div className="mb-8">
+        <PageHeader
+          icon={Icons.Activity}
+          title="Activity Logs"
+          description="Monitor and track all system activities and user actions"
+        />
       </div>
 
       {/* Filters with inline search */}

@@ -1,18 +1,19 @@
 "use client";
 import { Card } from "@/components/ui";
+import { PageHeader } from "@/components/ui";
+import Icons from "@/components/icons";
 import Link from "next/link";
 
 export default function Dashboard() {
   return (
     <div className="space-y-6">
       {/* Welcome Section */}
-      <div>
-        <h1 className="text-3xl font-bold text-secondary-900">
-          Welcome to Rocky CRM!
-        </h1>
-        <p className="mt-2 text-secondary-600">
-          Here's what's happening with your pharmacy today.
-        </p>
+      <div className="mb-8">
+        <PageHeader
+          icon={Icons.Dashboard}
+          title="Welcome to Rocky CRM!"
+          description="Here's what's happening with your pharmacy today."
+        />
       </div>
 
       {/* Stats Grid */}

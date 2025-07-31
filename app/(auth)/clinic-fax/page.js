@@ -8,7 +8,9 @@ import {
   DataTable,
   UserAvatar,
   SendFaxModal,
+  PageHeader,
 } from "@/components/ui";
+import Icons from "@/components/icons";
 import { Eye, Trash2, Send } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -409,16 +411,22 @@ export default function ClinicFaxPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-secondary-900">Clinic Fax</h1>
-        <Button
-          variant="send"
-          size="default"
-          onClick={() => setIsSendFaxModalOpen(true)}
-        >
-          <Send className="h-4 w-4 mr-2" />
-          Send New FAX
-        </Button>
+      <div className="mb-8">
+        <PageHeader
+          icon={Icons.Fax}
+          title="Clinic Fax"
+          description="Send and manage fax communications with clinics"
+          actions={
+            <Button
+              variant="send"
+              size="default"
+              onClick={() => setIsSendFaxModalOpen(true)}
+            >
+              <Send className="h-4 w-4 mr-2" />
+              Send New FAX
+            </Button>
+          }
+        />
       </div>
 
       {/* Filters with inline search */}

@@ -8,7 +8,9 @@ import {
   DataTable,
   UserAvatar,
   PharmacyFaxModal,
+  PageHeader,
 } from "@/components/ui";
+import Icons from "@/components/icons";
 import { Eye, Trash2, Send, Download } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -373,16 +375,22 @@ export default function PharmacyFaxPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-secondary-900">Pharmacy Fax</h1>
-        <Button
-          variant="add"
-          size="default"
-          onClick={() => setIsPharmacyFaxModalOpen(true)}
-        >
-          <Send className="h-4 w-4 mr-2" />
-          New Pharmacy Fax
-        </Button>
+      <div className="mb-8">
+        <PageHeader
+          icon={Icons.Fax}
+          title="Pharmacy Fax"
+          description="Manage and track fax communications with pharmacies"
+          actions={
+            <Button
+              variant="add"
+              size="default"
+              onClick={() => setIsPharmacyFaxModalOpen(true)}
+            >
+              <Send className="h-4 w-4 mr-2" />
+              New Pharmacy Fax
+            </Button>
+          }
+        />
       </div>
 
       {/* Filters with inline search */}

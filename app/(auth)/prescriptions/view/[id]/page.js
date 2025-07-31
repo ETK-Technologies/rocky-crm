@@ -1,6 +1,8 @@
 "use client";
 
 import { Button } from "@/components/ui";
+import { PageHeader } from "@/components/ui";
+import Icons from "@/components/icons";
 import { ArrowLeft, Download, Edit, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -51,56 +53,47 @@ Nova Scotia, NS , B0S 1P0`,
     console.log("Downloading PDF for prescription:", prespection.id);
   };
   return (
-    <>
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <div className="flex flex-col items-start gap-4">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-secondary-600 cursor-pointer"
-              onClick={handleBack}
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back
-            </Button>
-            <h1 className="text-xl md:text-2xl font-bold text-secondary-900">
-              Prescription View
-            </h1>
-          </div>
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="mb-8">
+        <PageHeader
+          icon={Icons.Prescription}
+          title="Prescription View"
+          onBack={handleBack}
+          backLabel="Back to Prescriptions"
+        />
+      </div>
 
-          {/* Action Buttons */}
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleDownloadPDF}
-              className="text-blue-600 border-blue-600 hover:bg-blue-50"
-            >
-              <Download className="h-4 w-4 mr-2" />
-              Download PDF
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleUpdate}
-              className="text-green-600 border-green-600 hover:bg-green-50"
-            >
-              <Edit className="h-4 w-4 mr-2" />
-              Update
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleDelete}
-              className="text-red-600 border-red-600 hover:bg-red-50"
-            >
-              <Trash2 className="h-4 w-4 mr-2" />
-              Delete
-            </Button>
-          </div>
-        </div>
+      {/* Action Buttons */}
+      <div className="flex justify-end gap-2">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleDownloadPDF}
+          className="text-blue-600 border-blue-600 hover:bg-blue-50"
+        >
+          <Download className="h-4 w-4 mr-2" />
+          Download PDF
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleUpdate}
+          className="text-green-600 border-green-600 hover:bg-green-50"
+        >
+          <Edit className="h-4 w-4 mr-2" />
+          Update
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleDelete}
+          className="text-red-600 border-red-600 hover:bg-red-50"
+        >
+          <Trash2 className="h-4 w-4 mr-2" />
+          Delete
+        </Button>
+      </div>
 
         <div
           className="p-5 bg-white max-w-[540px] mx-auto mb-5"
@@ -209,6 +202,6 @@ Nova Scotia, NS , B0S 1P0`,
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

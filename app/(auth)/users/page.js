@@ -2,9 +2,17 @@
 
 import { useState } from "react";
 import { Button, Input, Filters, DataTable, UserAvatar } from "@/components/ui";
+import { PageHeader } from "@/components/ui";
+import Icons from "@/components/icons";
 import { Pencil, Trash2, MoreHorizontal, Download, Mail } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter,
+} from "@/components/ui";
 import { useNotification } from "@/components/ui/Notification";
 import { X } from "lucide-react";
 
@@ -131,8 +139,6 @@ export default function UsersPage() {
     setSortDirection(direction);
   };
 
-
-
   // Delete logic
   const handleDeleteClick = (user) => {
     setUserToDelete(user);
@@ -141,7 +147,10 @@ export default function UsersPage() {
   const handleDeleteConfirm = () => {
     if (userToDelete.status === "active") {
       setUsers((prev) => prev.filter((u) => u.id !== userToDelete.id));
-      setTrashedUsers((prev) => [...prev, { ...userToDelete, status: "trashed" }]);
+      setTrashedUsers((prev) => [
+        ...prev,
+        { ...userToDelete, status: "trashed" },
+      ]);
       showSuccess("Deleted successfully", "User has been moved to trash.");
     } else {
       setTrashedUsers((prev) => prev.filter((u) => u.id !== userToDelete.id));
@@ -162,7 +171,7 @@ export default function UsersPage() {
       header: "Name",
       sortable: true,
       cell: (row) => (
-        <div 
+        <div
           className="flex items-center gap-3 cursor-pointer hover:bg-secondary-50 p-2 rounded-md transition-colors"
           onClick={() => router.push(`/users/${row.id}/edit`)}
         >
@@ -207,8 +216,8 @@ export default function UsersPage() {
     //   sortable: true,
     //   cell: (row) => (
     //     <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-    //       row.status === "active" 
-    //         ? "bg-green-100 text-green-800" 
+    //       row.status === "active"
+    //         ? "bg-green-100 text-green-800"
     //         : "bg-red-100 text-red-800"
     //     }`}>
     //       {row.status === "active" ? "Active" : "Trashed"}
@@ -258,10 +267,7 @@ export default function UsersPage() {
           >
             <Trash2 className="h-4 w-4" />
           </Button>
-          <Button 
-            variant="ghost" 
-            size="sm"
-          >
+          <Button variant="ghost" size="sm">
             <MoreHorizontal className="h-4 w-4" />
           </Button>
         </div>
@@ -295,11 +301,15 @@ export default function UsersPage() {
     <div className="space-y-6">
       <NotificationContainer />
       {/* Header */}
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-secondary-900">Users</h1>
-        <div className="flex gap-2">
-          <Button onClick={() => router.push("/users/add")}>Add User</Button>
-        </div>
+      <div className="mb-8">
+        <PageHeader
+          icon={Icons.Users}
+          title="Users"
+          description="Manage patient accounts, user permissions and information"
+          actions={
+            <Button onClick={() => router.push("/users/add")}>Add User</Button>
+          }
+        />
       </div>
 
       {/* Filters with inline search */}
@@ -325,7 +335,9 @@ export default function UsersPage() {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
             <div className="flex items-center justify-between p-6 border-b border-secondary-200">
-              <h2 className="text-lg font-semibold text-secondary-900">Delete User Account</h2>
+              <h2 className="text-lg font-semibold text-secondary-900">
+                Delete User Account
+              </h2>
               <Button
                 variant="ghost"
                 size="sm"
@@ -340,7 +352,8 @@ export default function UsersPage() {
                 Are you sure your want to delete this user account?
               </div>
               <div className="text-center text-secondary-600">
-                Once this account is deleted, all of its resources and data will be moved to trash.
+                Once this account is deleted, all of its resources and data will
+                be moved to trash.
               </div>
             </div>
             <div className="flex justify-end gap-2 px-6 pb-6">

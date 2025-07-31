@@ -11,6 +11,8 @@ import {
 import { ArrowLeft, Download, Mail, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { PageHeader } from "@/components/ui";
+import Icons from "@/components/icons";
 
 export default function PrespectionCreate() {
   const router = useRouter();
@@ -127,20 +129,13 @@ export default function PrespectionCreate() {
       <form onSubmit={handleSubmit}>
         <div className="space-y-6">
           {/* Header */}
-          <div className="flex flex-col items-start gap-4">
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              className="text-secondary-600 cursor-pointer"
-              onClick={handleBack}
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back
-            </Button>
-            <h1 className="text-xl md:text-2xl font-bold text-secondary-900">
-              Prescription Create
-            </h1>
+          <div className="mb-8">
+            <PageHeader
+              icon={Icons.Prescription}
+              title="Prescription Create"
+              onBack={handleBack}
+              backLabel="Back to Prescriptions"
+            />
           </div>
 
           <div className="flex justify-center items-start gap-4">
@@ -243,7 +238,14 @@ export default function PrespectionCreate() {
                             required
                           />
                           <Button type="button" size="icon" className="p-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-4 w-4"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                            >
                               <circle cx="11" cy="11" r="7" />
                               <line x1="21" y1="21" x2="16.65" y2="16.65" />
                             </svg>

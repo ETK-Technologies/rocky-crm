@@ -11,6 +11,8 @@ import {
 import { ArrowLeft, Download, Mail, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import { PageHeader } from "@/components/ui";
+import Icons from "@/components/icons";
 
 export default function PrespectionEdit({ params }) {
   const router = useRouter();
@@ -152,20 +154,13 @@ export default function PrespectionEdit({ params }) {
       <form onSubmit={handleSubmit}>
         <div className="space-y-6">
           {/* Header */}
-          <div className="flex flex-col items-start gap-4">
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              className="text-secondary-600 cursor-pointer"
-              onClick={handleBack}
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back
-            </Button>
-            <h1 className="text-xl md:text-2xl font-bold text-secondary-900">
-              Prescription Update
-            </h1>
+          <div className="mb-8">
+            <PageHeader
+              icon={Icons.Prescription}
+              title="Prescription Update"
+              onBack={handleBack}
+              backLabel="Back to Prescriptions"
+            />
           </div>
 
           <div className="flex justify-center items-start gap-4">

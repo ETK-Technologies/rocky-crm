@@ -156,7 +156,8 @@ const columns = [
     sortable: true,
     cell: (row) => {
       const statusClass = getStatusStyle(row.status);
-      const isDelayed = row.status === "Processing" && Math.random() > 0.5;
+      // Use deterministic approach instead of Math.random() to prevent hydration errors
+      const isDelayed = row.status === "Processing" && row.id % 2 === 0;
 
       return (
         <div className="space-y-1.5">

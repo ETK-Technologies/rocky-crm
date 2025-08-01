@@ -127,6 +127,64 @@ export default function ReportsPage() {
     );
   };
 
+  // Filter and sort data
+  const filteredData = prescriptions.filter((prescription) => {
+    // Search query filter
+    if (searchQuery) {
+      const searchLower = searchQuery.toLowerCase();
+      const matchesSearch =
+        prescription.userName.toLowerCase().includes(searchLower) ||
+        prescription.prescriptionNumber.toLowerCase().includes(searchLower) ||
+        prescription.orderNumber.toLowerCase().includes(searchLower) ||
+        prescription.prescribedBy.toLowerCase().includes(searchLower) ||
+        prescription.medications.some((med) =>
+          med.toLowerCase().includes(searchLower)
+        );
+
+      if (!matchesSearch) return false;
+    }
+
+    // Date range filter
+    const prescribedFilter = filters.find((f) => f.id === "prescribed");
+    if (prescribedFilter?.value?.start || prescribedFilter?.value?.end) {
+      const prescriptionDate = new Date(prescription.prescriptionDate);
+      if (prescribedFilter.value.start) {
+        const startDate = new Date(prescribedFilter.value.start);
+        if (prescriptionDate < startDate) return false;
+      }
+      if (prescribedFilter.value.end) {
+        const endDate = new Date(prescribedFilter.value.end);
+        if (prescriptionDate > endDate) return false;
+      }
+    }
+
+    // Category filter
+    const categoryFilter = filters.find((f) => f.id === "category");
+    if (categoryFilter?.value && categoryFilter.value !== "") {
+      if (prescription.category !== categoryFilter.value) return false;
+    }
+
+    // Prescribed By filter
+    const prescribedByFilter = filters.find((f) => f.id === "prescribedBy");
+    if (prescribedByFilter?.value && prescribedByFilter.value !== "") {
+      if (prescription.prescribedBy !== prescribedByFilter.value) return false;
+    }
+
+    return true;
+  });
+
+  // Sort filtered data
+  const sortedData = [...filteredData].sort((a, b) => {
+    const aValue = a[sortColumn];
+    const bValue = b[sortColumn];
+    const modifier = sortDirection === "asc" ? 1 : -1;
+
+    if (typeof aValue === "string") {
+      return aValue.localeCompare(bValue) * modifier;
+    }
+    return (aValue - bValue) * modifier;
+  });
+
   // Table columns configuration
   const columns = [
     {
@@ -372,7 +430,7 @@ export default function ReportsPage() {
 
       <DataTable
         columns={columns}
-        data={prescriptions}
+        data={sortedData}
         onSort={handleSort}
         sortColumn={sortColumn}
         sortDirection={sortDirection}

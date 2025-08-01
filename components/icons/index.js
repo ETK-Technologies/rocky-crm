@@ -19,6 +19,8 @@ import {
   X,
   ChevronRight,
   ChevronLeft,
+  Edit,
+  Lock,
 } from "lucide-react";
 
 const Icons = {
@@ -42,6 +44,8 @@ const Icons = {
   Close: X,
   Expand: ChevronRight,
   Collapse: ChevronLeft,
+  Edit: Edit,
+  Lock: Lock,
 };
 
 export default Icons;

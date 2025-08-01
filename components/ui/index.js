@@ -15,6 +15,9 @@ export { default as SendFaxModal } from "./SendFaxModal";
 export { default as PharmacyFaxModal } from "./PharmacyFaxModal";
 export { default as PageHeader } from "./PageHeader";
 export { default as QuickActionsFilter } from "./QuickActionsFilter";
+export { TagInput } from "./TagInput";
+export { FileDownload } from "./FileDownload";
+export { FormCard } from "./FormCard";
 
 // Export Custom Components
 export { UserAvatar } from "../UserAvatar";

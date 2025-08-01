@@ -46,7 +46,6 @@ const defaultFilters = [
       { value: "Ontario", label: "Ontario" },
       { value: "Quebec", label: "Quebec" },
       { value: "British Columbia", label: "British Columbia" },
-      // ...add all provinces
     ],
   },
   {
@@ -94,7 +93,6 @@ const defaultFilters = [
 
 function filterOrders(data, filters, searchQuery, activeStatus) {
   return data.filter((order) => {
-    // First check active status filter
     if (activeStatus !== "All" && order.status !== activeStatus) {
       return false;
     }
@@ -128,7 +126,7 @@ function filterOrders(data, filters, searchQuery, activeStatus) {
   });
 }
 
-const OrderPage = () => {
+const OrderPageMain = () => {
   const [filters, setFilters] = useState(defaultFilters);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortColumn, setSortColumn] = useState("id");
@@ -229,4 +227,4 @@ const OrderPage = () => {
   );
 };
 
-export default OrderPage;
+export default OrderPageMain;

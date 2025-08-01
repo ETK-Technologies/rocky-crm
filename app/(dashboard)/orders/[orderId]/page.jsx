@@ -1,7 +1,7 @@
 "use client";
-import ordersData from "@/modules/orders/data/ordersData";
+import ordersData from "../ordersPageComponents/data/ordersData";
 import { useParams } from "next/navigation";
-import OrderDetailsPage from "@/modules/orders/OrderDetailsPage";
+import OrderDetailsPage from "../ordersPageComponents/OrderDetailsPage";
 
 export default function OrderDetails() {
     const { orderId } = useParams();

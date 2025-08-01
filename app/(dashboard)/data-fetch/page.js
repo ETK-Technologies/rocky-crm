@@ -192,7 +192,7 @@ export default function DataFetch() {
         category: "Body Optimization",
     },
   ]);
-
+ 
   return (
     <>
       <div className="space-y-6">

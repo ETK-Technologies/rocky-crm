@@ -1,6 +1,7 @@
 import {
   LayoutDashboard,
   Users,
+  User,
   ClipboardList,
   Eye,
   Package,
@@ -12,6 +13,7 @@ import {
   Bell,
   Clock,
   BarChart2,
+  BarChart3,
   MessageCircle,
   LogOut,
   X,
@@ -22,6 +24,7 @@ import {
 const Icons = {
   Dashboard: LayoutDashboard,
   Users: Users,
+  User: User,
   Orders: ClipboardList,
   TrackOrder: Eye,
   Refills: Package,
@@ -33,6 +36,7 @@ const Icons = {
   Queue: Bell,
   Activity: Clock,
   Reports: BarChart2,
+  BarChart3: BarChart3,
   Messages: MessageCircle, // Changed from MessageSquare to MessageCircle for distinction
   Logout: LogOut,
   Close: X,

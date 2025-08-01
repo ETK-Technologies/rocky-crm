@@ -12,7 +12,7 @@ import {
 import Icons from "@/components/icons";
 import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import { set } from "date-fns";
-import OrdersTable from "@/modules/orders/components/OrdersTable";
+import OrdersTable from "../orders/ordersPageComponents/components/OrdersTable";
 
 export default function DataFetch() {
   const [activeTab, setActiveTab] = useState("users");
@@ -174,25 +174,25 @@ export default function DataFetch() {
   ]);
 
   const [orders, setOrders] = useState([{
-        id: 500001,
-        name: "Alice Smith",
-        tags: ["Body Optimization Program"],
-        date: "2024-01-10T09:00:00.000Z",
-        createdDate: "2024-01-10T09:00:00.000Z",
-        updatedDate: "2024-01-15T10:00:00.000Z",
-        province: "Ontario",
-        orderType: "New",
-        product: "Body Optimization Program",
-        status: "Pending payment",
-        shipping: "Alice Smith, Ontario",
-        total: 250,
-        payment: "Credit Card",
-        items: ["Body Optimization Program"],
-        prescription: ["Body Optimization Program"],
-        category: "Body Optimization",
-    },
+    id: 500001,
+    name: "Alice Smith",
+    tags: ["Body Optimization Program"],
+    date: "2024-01-10T09:00:00.000Z",
+    createdDate: "2024-01-10T09:00:00.000Z",
+    updatedDate: "2024-01-15T10:00:00.000Z",
+    province: "Ontario",
+    orderType: "New",
+    product: "Body Optimization Program",
+    status: "Pending payment",
+    shipping: "Alice Smith, Ontario",
+    total: 250,
+    payment: "Credit Card",
+    items: ["Body Optimization Program"],
+    prescription: ["Body Optimization Program"],
+    category: "Body Optimization",
+  },
   ]);
- 
+
   return (
     <>
       <div className="space-y-6">
@@ -280,7 +280,7 @@ export default function DataFetch() {
 
               {FoundOrders && (
                 <>
-                  <OrdersTable 
+                  <OrdersTable
                     orders={orders}
                   />
                 </>

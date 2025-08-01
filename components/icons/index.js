@@ -17,6 +17,7 @@ import {
   X,
   ChevronRight,
   ChevronLeft,
+  Files,
 } from "lucide-react";
 
 const Icons = {
@@ -38,6 +39,8 @@ const Icons = {
   Close: X,
   Expand: ChevronRight,
   Collapse: ChevronLeft,
+  Documents: Files,
+  Questionnaire: ClipboardList,
 };
 
 export default Icons;

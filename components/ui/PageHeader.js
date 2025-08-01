@@ -12,9 +12,11 @@ const PageHeader = ({
     <div className="flex flex-col gap-4">
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-4">
-          <div className="flex items-center justify-center w-12 h-12 bg-primary-100 rounded-xl">
-            <IconComponent className="w-6 h-6 text-primary-600" />
-          </div>
+          {IconComponent && (
+            <div className="flex items-center justify-center w-12 h-12 bg-primary-100 rounded-xl">
+              <IconComponent className="w-6 h-6 text-primary-600" />
+            </div>
+          )}
           <div>
             <h1 className="text-3xl font-bold text-secondary-900">{title}</h1>
             {description && (

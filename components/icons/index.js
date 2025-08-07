@@ -21,6 +21,7 @@ import {
   ChevronLeft,
   Edit,
   Lock,
+  Truck,
 } from "lucide-react";
 
 const Icons = {
@@ -28,7 +29,7 @@ const Icons = {
   Users: Users,
   User: User,
   Orders: ClipboardList,
-  TrackOrder: Eye,
+  TrackOrder: Truck,
   Refills: Package,
   Forms: FileText,
   Prescription: Pill,
